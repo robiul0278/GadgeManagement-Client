@@ -12,13 +12,13 @@ type TInputProps = {
 const SelectInput = ({ name, label, options,defaultValue }: TInputProps) => {
 
   return (
-    <div style={{ marginBottom: '20px' }}>
+    <div style={{ marginBottom: '20px',}}>
       {label ? <label htmlFor={name}>{label}</label> : null}
       <br />
       <Controller
         name={name}
         render={({ field }) => (
-          <Select className='select-w' {...field} id={name}>
+          <Select style={{ width: "338px" }} className='select-w' {...field} id={name}>
             {options.map((option) => (
               <Select.Option key={option.value} defaultValue={defaultValue} value={option.value}>
                 {option.label}

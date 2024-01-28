@@ -90,7 +90,7 @@ const SalesHistory = () => {
           <option value="yearly">Yearly</option>
         </select>
       </div>
-      <Table columns={columns} dataSource={filteredData} />
+      <Table columns={columns} dataSource={filteredData}/>
     </>
   );
 };

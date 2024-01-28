@@ -14,7 +14,7 @@ const CreateVariant = () => {
     const {gadgetId} = useParams();
     const {data:{data: product} = {}, isLoading}  = useSingleProductQuery(gadgetId)
     const [DuplicateVariant] = useCreateGadgetMutation()
-    // console.log(product)
+    console.log("Main data",product)
 
     if (isLoading) {
       return <Skeleton active />;
@@ -43,7 +43,7 @@ const CreateVariant = () => {
         const res = await DuplicateVariant(updateInfo).unwrap();
         console.log(res.data)
         if(res.success){
-          toast.success("Gadget create successful!", { id: toastId, duration: 2000 });
+          toast.success("Variant create successful!", { id: toastId, duration: 2000 });
         }
       } catch (error: any) {
         console.log()
@@ -61,7 +61,7 @@ const CreateVariant = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col className="colInput" span={8}>
-            <label htmlFor="name">Name</label> <br />
+            <label htmlFor="name">Product Name</label> <br />
             <input
             className="gInput"
               type="text"
@@ -91,14 +91,14 @@ const CreateVariant = () => {
             />
           </Col>
           <Col className="colInput" span={8}>
-             <label htmlFor="apple">Select Category</label><br />
-            <select className="gInput" id="apple" defaultValue={product?.brand} {...register("brand", { required: true })}>
-              <option value="apple">Apple</option>
-              <option value="sony">Sony</option>
-              <option value="samsung">Samsung</option>
-              <option value="logitech">Logitech</option>
-              <option value="hyperX">HyperX</option>
-            </select>
+            <label htmlFor="product_name">Features</label><br />
+            <input
+            className="gInput"
+              type="text"
+              id="product_name"
+              defaultValue={product?.features}
+              {...register("features", { required: true })}
+            />
           </Col>
           <Col className="colInput" span={8}>
             <label htmlFor="model_number">Model Number</label> <br />
@@ -111,57 +111,52 @@ const CreateVariant = () => {
             />
           </Col>
           <Col className="colInput" span={8}>
-            <label htmlFor="smartphones">Select Category</label> <br />
-            <select className="gInput" id="smartphones" defaultValue={product?.category} {...register("category", { required: true })}>
+             <label htmlFor="brand">Select Brand</label><br />
+            <select className="gInput" id="brand" defaultValue={product?.brand} {...register("brand", { required: true })}>
+              <option value="apple">Apple</option>
+              <option value="sony">Sony</option>
+              <option value="samsung">Samsung</option>
+              <option value="logitech">Logitech</option>
+              <option value="hyperX">HyperX</option>
+            </select>
+          </Col>
+
+          <Col className="colInput" span={8}>
+            <label htmlFor="category">Select Category</label> <br />
+            <select className="gInput" id="category" defaultValue={product?.category} {...register("category", { required: true })}>
               <option value="smartphones">Smartphones</option>
               <option value="laptops">Laptops</option>
               <option value="smartwatches">Smartwatches</option>
-              <option value="earbuds">Earbuds</option>
-              <option value="mouse">Mouse</option>
+              <option value="camera">Camera</option>
+              <option value="tablets">Tablets</option>
             </select>
           </Col>
           <Col className="colInput" span={8}>
-            <label htmlFor="operating_system">Operating System</label><br />
-            <input
-            className="gInput"
-              type="text"
-              id="operating_system"
-              defaultValue={product?.operating_system}
-              {...register("operating_system", { required: true })}
-            />
+            <label htmlFor="operating_system">Operating System</label> <br />
+            <select className="gInput" id="operating_system" defaultValue={product?.operating_system} {...register("operating_system", { required: true })}>
+              <option value="windows">Windows</option>
+              <option value="Android">Android</option>
+              <option value="ios">iOS</option>
+            </select>
           </Col>
           <Col className="colInput" span={8}>
-            <label htmlFor="connectivity">Connectivity</label><br />
-            <input
-            className="gInput"
-              type="text"
-              id="connectivity"
-              defaultValue={product?.connectivity}
-              {...register("connectivity", { required: true })}
-            />
+            <label htmlFor="connectivity">Connectivity</label> <br />
+            <select className="gInput" id="connectivity"   defaultValue={product?.connectivity} {...register("connectivity", { required: true })}>
+              <option value="wi-fi">Wi-Fi</option>
+              <option value="bluetooth">Bluetooth</option>
+              <option value="usb">USB</option>
+            </select>
           </Col>
           <Col className="colInput" span={8}>
-            <label htmlFor="power_source">Power Source</label><br />
-            <input
-            className="gInput"
-              type="text"
-              id="power_source"
-              defaultValue={product?.power_source}
-              {...register("power_source", { required: true })}
-            />
+            <label htmlFor="battery-powered">Power Source</label> <br />
+            <select className="gInput" id="power_source"   defaultValue={product?.power_source} {...register("power_source", { required: true })}>
+              <option value="battery-powered">Battery-powered</option>
+              <option value="plug-in">Plug-in</option>
+            </select>
           </Col>
-          <Col className="colInput" span={8}>
-            <label htmlFor="product_name">Features</label><br />
-            <input
-            className="gInput"
-              type="text"
-              id="product_name"
-              defaultValue={product?.features}
-              {...register("features", { required: true })}
-            />
-          </Col>
+
         </Row>
-        <Button htmlType="submit">Update</Button>
+        <Button htmlType="submit">Create Variant</Button>
       </form>
     </div>
   );

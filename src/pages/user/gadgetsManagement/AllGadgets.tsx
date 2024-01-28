@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Skeleton, Space, Table } from "antd";
+import { Button,Skeleton, Space, Table } from "antd";
 import {
   useAllGadgetQuery,
   useBulkDeleteMutation,
@@ -36,35 +36,35 @@ const AllGadgets = () => {
       dataIndex: "price",
     },
     {
-      title: "brand",
+      title: "Brand",
       dataIndex: "brand",
     },
     {
-      title: "quantity",
+      title: "Quantity",
       dataIndex: "quantity",
     },
     {
-      title: "model_number",
+      title: "Model Number",
       dataIndex: "model_number",
     },
     {
-      title: "category",
+      title: "Category",
       dataIndex: "category",
     },
     {
-      title: "connectivity",
+      title: "Connectivity",
       dataIndex: "connectivity",
     },
     {
-      title: "power_source",
+      title: "Power Source",
       dataIndex: "power_source",
     },
     {
-      title: "operating_system",
+      title: "Operating System",
       dataIndex: "operating_system",
     },
     {
-      title: "features",
+      title: "Features",
       dataIndex: "features",
     },
 
@@ -75,10 +75,14 @@ const AllGadgets = () => {
       render: (_: any, record: any) => (
         <Space>
           <Button size="small" type="dashed">
-            <Link to={`/user/update-gadget/${record._id}`}><EditOutlined /></Link>
+            <Link to={`/user/update-gadget/${record._id}`}>
+              <EditOutlined />
+            </Link>
           </Button>
           <Button size="small" type="dashed">
-            <Link to={`/user/duplicate-gadget/${record._id}`}><CopyOutlined /></Link>
+            <Link to={`/user/duplicate-gadget/${record._id}`}>
+              <CopyOutlined />
+            </Link>
           </Button>
           <Button
             size="small"
@@ -96,7 +100,7 @@ const AllGadgets = () => {
   ];
 
   const handleDelete = async (id: string) => {
-     await DeleteProduct(id);
+    await DeleteProduct(id);
     // console.log(res);
   };
 
@@ -106,15 +110,15 @@ const AllGadgets = () => {
         key: item._id,
         _id: item._id,
         name: item.name,
-        model_number: item.model_number,
         price: item.price,
         brand: item.brand,
         quantity: item.quantity,
+        model_number: item.model_number,
         category: item.category,
-        operating_system: item.operating_system,
         connectivity: item.connectivity,
-        features: item.features,
         power_source: item.power_source,
+        operating_system: item.operating_system,
+        features: item.features,
       });
     }
 
@@ -153,19 +157,84 @@ const AllGadgets = () => {
 
   return (
     <>
-     <h1 className="text-center">All Electronics Gadgets</h1>
+      <h1 className="text-center">All Electronics Gadgets</h1>
       <hr />
-      <div style={{ marginBottom: 10, marginTop: 10 }}>
-        <Button type="primary" onClick={handleBulkDelete}>
-          Delete
-        </Button>
-        <span style={{ marginLeft: 8 }}></span>
+      <div style={{ display: "flex" }}>
+        <div className="shadow rounded mt-2 mb-2" style={{ width: "300px" }}>
+          <h3 className="text-center">Filtered Your Data</h3>
+          <hr />
+          <form className="p-2" style={{ marginBottom: 10, marginTop: 10 }}>
+            <label htmlFor="price">Price Range</label>
+            <div className="flex mt-1 mb-2">
+              <input
+                style={{ width: "140px", padding: "8px" }}
+                type="number"
+                id="price"
+                placeholder="min"
+              />
+              <input
+                style={{ width: "140px", padding: "8px" }}
+                type="number"
+                id="price"
+                placeholder="max"
+              />
+            </div>
+            <label htmlFor="date">release Date</label>
+            <br />
+            <input className="mb-2" style={{ padding: "8px", width:"280px" }} type="date" id="date" /> <br />
+            <label htmlFor="samsung">Filter by Brand</label>
+            <br />
+            <select id="samsung">
+              <option selected >select brand</option>
+              <option value="samsung">Samsung</option>
+              <option  value="hyperX">HyperX</option>
+              <option value="logitech">Logitech</option>
+              <option value="apple">Apple</option>
+              <option value="sony">Sony</option>
+            </select>
+            <label htmlFor="mouse">Filter by Category</label>
+            <br />
+            <select id="mouse">
+              <option selected >select category</option>
+              <option value="Mouse">Mouse</option>
+              <option value="Earbuds">Earbuds</option>
+              <option value="Laptops">Laptops</option>
+              <option value="Smartphones">Smartphones</option>
+              <option value="Smartwatches">Smartwatches</option>
+            </select>
+            <label htmlFor="windows">Filter by Operating System</label>
+            <br />
+            <select id="windows">
+              <option selected>select operating system</option>
+              <option value="Windows">Windows</option>
+              <option value="Android">Android</option>
+              <option value="iOS">iOS</option>
+            </select>
+            <label htmlFor="bluetooth">Filter by Connectivity</label>
+            <br />
+            <select id="bluetooth">
+              <option selected>select connectivity</option>
+              <option value="USB-C">USB-C</option>
+              <option value="Wi-Fi">Wi-Fi</option>
+              <option value="bluetooth">Bluetooth</option>
+            </select>
+          </form>
+        </div>
+        <div className="shadow rounded m-2">
+          <div className="m-5" style={{ marginBottom: 10, marginTop: 10 }}>
+            <Button type="primary" onClick={handleBulkDelete}>
+              Delete
+            </Button>
+            <span style={{ marginLeft: 8 }}></span>
+          </div>
+          <Table
+            className="m-5"
+            rowSelection={rowSelection}
+            columns={columns}
+            dataSource={allData}
+          />
+        </div>
       </div>
-      <Table
-        rowSelection={rowSelection}
-        columns={columns}
-        dataSource={allData}
-      />
     </>
   );
 };

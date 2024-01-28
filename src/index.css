@@ -13,6 +13,10 @@ h2 {
   font-size: 2rem;
 }
 
+.flex{
+  display: flex;
+}
+
 .mt-1 {
   margin-top: 4px;
 }
