@@ -151,7 +151,9 @@ const AllGadgets = () => {
 
   return (
     <>
-      <div style={{ marginBottom: 16 }}>
+     <h1 className="text-center">Create a New Electronics Gadget</h1>
+      <hr />
+      <div style={{ marginBottom: 10, marginTop: 10 }}>
         <Button type="primary" onClick={handleBulkDelete}>
           Delete
         </Button>

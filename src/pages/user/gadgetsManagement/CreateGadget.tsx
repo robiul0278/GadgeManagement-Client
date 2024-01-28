@@ -46,16 +46,17 @@ const CreateGadget = () => {
       style={{ border: "1px solid gray" }}
     >
       <h1 className="text-center">Create a New Electronics Gadget</h1>
+      <hr />
       <CreateForm onSubmit={onSubmit}>
         <Row>
           <Col className="colInput" span={8}>
-            <CreateInput type="text" name="product_name" label="Product Name" />
+            <CreateInput type="text" name="product_name" label="Product Name" placeholder="Product Name"/>
           </Col>
           <Col className="colInput" span={8}>
-            <CreateInput type="number" name="price" label="Price" />
+            <CreateInput type="number" name="price" label="Price" placeholder="Price" />
           </Col>
           <Col className="colInput" span={8}>
-            <CreateInput type="number" name="quantity" label="Quantity" />
+            <CreateInput type="number" name="quantity" label="Quantity" placeholder="Quantity"/>
           </Col>
           <Col className="colInput" span={8}>
             <SelectInput
@@ -72,7 +73,7 @@ const CreateGadget = () => {
             />
           </Col>
           <Col className="colInput" span={8}>
-            <CreateInput type="text" name="model_number" label="Model Number" />
+            <CreateInput type="text" name="model_number" label="Model Number" placeholder="Model Number" />
           </Col>
           <Col className="colInput" span={8}>
             <SelectInput
@@ -93,16 +94,17 @@ const CreateGadget = () => {
               type="text"
               name="operating_system"
               label="Operating System"
+              placeholder="Operating System"
             />
           </Col>
           <Col className="colInput" span={8}>
-            <CreateInput type="text" name="connectivity" label="Connectivity" />
+            <CreateInput type="text" name="connectivity" label="Connectivity" placeholder="Connectivity"/>
           </Col>
           <Col className="colInput" span={8}>
-            <CreateInput type="text" name="power_source" label="Power Source" />
+            <CreateInput type="text" name="power_source" label="Power Source" placeholder="Power Source"/>
           </Col>
           <Col className="colInput" span={8}>
-            <CreateInput type="text" name="features" label="Features" />
+            <CreateInput type="text" name="features" label="Features" placeholder="Features"/>
           </Col>
         </Row>
         <Button htmlType="submit">Create</Button>

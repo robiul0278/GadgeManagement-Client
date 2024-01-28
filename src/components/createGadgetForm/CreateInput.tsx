@@ -6,15 +6,16 @@ type: string ;
   name: string;
   label?: string;
   defaultValue?: string | number;
+  placeholder?: string ;
 };
 
-const CreateInput = ({ type, name, label, defaultValue   }: TInputProps) => {
+const CreateInput = ({ type, name, label, defaultValue, placeholder   }: TInputProps) => {
   return (
     <div style={{ marginBottom: '20px' }}>
       {label ? label : null}
       <Controller
         name={name}
-        render={({ field }) => <Input {...field}  defaultValue={defaultValue} type={type} id={name} />}
+        render={({ field }) => <Input {...field} placeholder={placeholder}  defaultValue={defaultValue} type={type} id={name} />}
       />
     </div>
   );

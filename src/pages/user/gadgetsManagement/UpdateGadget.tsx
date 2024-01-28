@@ -27,21 +27,24 @@ const UpdateGadget = () => {
       className="shadow rounded p-5 w-7xl"
       style={{ border: "1px solid gray" }}
     >
-      <h1 className="text-center">Create a New Electronics Gadget</h1>
+      <h1 className="text-center">Update Electronics Gadget</h1>
+      <hr />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col className="colInput" span={8}>
-            <label htmlFor="product_name">Name</label> <br />
+            <label htmlFor="name">Name</label> <br />
             <input
+            className="gInput"
               type="text"
-              id="product_name"
+              id="name"
               defaultValue={product?.name}
-              {...register("username", { required: true })}
+              {...register("name", { required: true })}
             />
           </Col>
           <Col className="colInput" span={8}>
-            <label htmlFor="username">Price</label> <br />
+            <label htmlFor="price">Price</label> <br />
             <input
+            className="gInput"
               type="text"
               id="price"
               defaultValue={product?.price}
@@ -49,8 +52,9 @@ const UpdateGadget = () => {
             />
           </Col>
           <Col className="colInput" span={8}>
-            <label htmlFor="username">Quantity</label><br />
+            <label htmlFor="quantity">Quantity</label><br />
             <input
+            className="gInput"
               type="text"
               id="quantity"
               defaultValue={product?.quantity}
@@ -59,7 +63,7 @@ const UpdateGadget = () => {
           </Col>
           <Col className="colInput" span={8}>
              <label htmlFor="apple">Select Category</label><br />
-            <select id="apple" defaultValue={product?.brand} {...register("brand", { required: true })}>
+            <select className="gInput" id="apple" defaultValue={product?.brand} {...register("brand", { required: true })}>
               <option value="apple">Apple</option>
               <option value="sony">Sony</option>
               <option value="samsung">Samsung</option>
@@ -70,6 +74,7 @@ const UpdateGadget = () => {
           <Col className="colInput" span={8}>
             <label htmlFor="model_number">Model Number</label> <br />
             <input
+            className="gInput"
               type="text"
               id="model_number"
               defaultValue={product?.model_number}
@@ -78,7 +83,7 @@ const UpdateGadget = () => {
           </Col>
           <Col className="colInput" span={8}>
             <label htmlFor="smartphones">Select Category</label> <br />
-            <select id="smartphones" defaultValue={product?.category} {...register("category", { required: true })}>
+            <select className="gInput" id="smartphones" defaultValue={product?.category} {...register("category", { required: true })}>
               <option value="smartphones">Smartphones</option>
               <option value="laptops">Laptops</option>
               <option value="smartwatches">Smartwatches</option>
@@ -89,6 +94,7 @@ const UpdateGadget = () => {
           <Col className="colInput" span={8}>
             <label htmlFor="operating_system">Operating System</label><br />
             <input
+            className="gInput"
               type="text"
               id="operating_system"
               defaultValue={product?.operating_system}
@@ -98,6 +104,7 @@ const UpdateGadget = () => {
           <Col className="colInput" span={8}>
             <label htmlFor="connectivity">Connectivity</label><br />
             <input
+            className="gInput"
               type="text"
               id="connectivity"
               defaultValue={product?.connectivity}
@@ -107,6 +114,7 @@ const UpdateGadget = () => {
           <Col className="colInput" span={8}>
             <label htmlFor="power_source">Power Source</label><br />
             <input
+            className="gInput"
               type="text"
               id="power_source"
               defaultValue={product?.power_source}
@@ -116,7 +124,7 @@ const UpdateGadget = () => {
           <Col className="colInput" span={8}>
             <label htmlFor="product_name">Features</label><br />
             <input
-            className="p-2"
+            className="gInput"
               type="text"
               id="product_name"
               defaultValue={product?.features}

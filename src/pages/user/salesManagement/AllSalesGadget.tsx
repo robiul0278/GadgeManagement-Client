@@ -164,10 +164,12 @@ const AllSalesGadgets = () => {
           </LoginForm>
         </Modal>
       </>
-      <div style={{ marginBottom: 16 }}>
+      <h1 className="text-center">Sales Electronics Gadget</h1>
+      <hr />
+      <div style={{ marginBottom: 10, marginTop:10 }}>
         <LoginForm onSubmit={onSubmit}>
           <div style={{ display: "flex" }}>
-            <LoginInput type="text" name="" label="" />
+            <LoginInput type="search" name="" label="" placeholder="Search your gadgets"/>
             <Button htmlType="submit">Search</Button>
           </div>
         </LoginForm>
