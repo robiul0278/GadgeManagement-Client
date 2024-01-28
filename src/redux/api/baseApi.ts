@@ -64,5 +64,5 @@ import {
     reducerPath: 'baseApi',
     baseQuery: baseQueryWithRefreshToken,
     endpoints: () => ({}),
-    tagTypes: ["AllGadget"]
+    tagTypes: ["AllGadget", "AllSales"],
   });

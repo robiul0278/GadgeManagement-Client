@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Table, Modal } from "antd";
+import { Button, Table, Modal, Row } from "antd";
 import { useAllGadgetQuery } from "../../../redux/features/product/productApi";
 import { SerializedError } from "@reduxjs/toolkit";
 import { toast } from "sonner";
@@ -9,6 +9,9 @@ import type { TableColumnsType, TableProps } from "antd";
 import { TGadget } from "../../../types/types";
 import LoginInput from "../../../components/authForm/LoginInput";
 import LoginForm from "../../../components/authForm/LoginForm";
+import { FieldValues, useForm } from "react-hook-form";
+import { Col } from "antd";
+import { useCreateSalesMutation } from "../../../redux/features/sales/salesApi";
 
 type TableRowSelection<T> = TableProps<T>["rowSelection"];
 
@@ -20,7 +23,9 @@ interface DataType {
 }
 
 const AllSalesGadgets = () => {
+  const { register, handleSubmit } = useForm();
   const { data: allGadgets, isLoading, error } = useAllGadgetQuery({});
+  const [CreateSales] = useCreateSalesMutation();
   const [saleProductId, setSaleProductId] = useState();
   console.log(saleProductId);
 
@@ -137,39 +142,96 @@ const AllSalesGadgets = () => {
     selectedRowKeys,
     onChange: onSelectChange,
     selections: [Table.SELECTION_ALL],
+    
   };
 
-  const onSubmit = () => {};
 
+
+
+  // Modal data =====================================
+
+
+  const onSubmit = async (data: FieldValues) => {
+    console.log("data",data)
+    const toastId = toast.loading("Registering user!");
+
+    try {
+      const saleInfo = {
+        name: data.buyer_name,
+        quantity:parseFloat(data.quantity),
+        date: new Date(),
+      };
+      const response = await CreateSales(saleInfo).unwrap();
+      console.log(response);
+      toast.success("Sales successful!", { id: toastId, duration: 2000 });
+      // Optionally, you can handle further actions after successful registration
+    } catch (error: any) {
+      console.log()
+      toast.error(`Something went wrong! ${error?.data?.message} !`, { id: toastId, duration: 2000 });
+     
+    }
+  };
   return (
     <>
       <>
         <Modal
+        width={600}
           title="Sales Electronics Gadgets"
           open={isModalOpen}
           onOk={handleOk}
           onCancel={handleCancel}
         >
-          <LoginForm onSubmit={onSubmit}>
-            <div style={{ display: "" }}>
-              <LoginInput type="text" name="name" label="Product Name" />
-              <LoginInput
-                type="text"
-                name="quantity"
-                label="Product Quantity"
-              />
-              <LoginInput type="text" name="price" label="Price" />
-              <Button htmlType="submit">Submit</Button>
-            </div>
-          </LoginForm>
+          <hr />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Row style={{}}>
+                <Col className="colInput" span={8}>
+                  <label htmlFor="name">Buyer Name:</label> <br />
+                  <input
+                    style={{ padding: "10px" }}
+                    type="text"
+                    id="name"
+                    placeholder="Buyer name"
+                    {...register("buyer_name", { required: true })}
+                  />
+                </Col>
+                <Col className="colInput" span={8}>
+                  <label htmlFor="price">Quantity:</label> <br />
+                  <input
+                    style={{ padding: "10px" }}
+                    type="number"
+                    id="price"
+                    placeholder="Quantity number"
+                    {...register("quantity", { required: true })}
+                  />
+                </Col>
+                <Col className="colInput" span={8}>
+                  <label htmlFor="date">Sale Date:</label>
+                  <br />
+                  <input
+                    style={{ padding: "9px" }}
+                    type="date"
+                    id="date"
+                    {...register("sale_date", { required: true })}
+                  />
+                </Col>
+            </Row>
+            <Button className="mt-5" htmlType="submit">
+              Sale Product
+            </Button>
+          </form>
         </Modal>
       </>
       <h1 className="text-center">Sales Electronics Gadget</h1>
       <hr />
-      <div style={{ marginBottom: 10, marginTop:10 }}>
+      <div style={{ marginBottom: 10, marginTop: 10 }}>
         <LoginForm onSubmit={onSubmit}>
           <div style={{ display: "flex" }}>
-            <LoginInput type="search" name="" label="" placeholder="Search your gadgets"/>
+            <LoginInput
+              type="search"
+              name=""
+              label=""
+              placeholder="Search your gadgets"
+            />
             <Button htmlType="submit">Search</Button>
           </div>
         </LoginForm>

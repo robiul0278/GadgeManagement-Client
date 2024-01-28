@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Row } from "antd";
-import { FieldValues, useForm } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { useRegisterMutation } from "../redux/features/auth/authApi";
 import RegisterForm from "../components/authForm/RegisterForm";
@@ -9,7 +9,6 @@ import { NavLink } from "react-router-dom";
 
 const Register = () => {
   const [registerUser] = useRegisterMutation();
-  const { reset } = useForm();
 
   const onSubmit = async (data: FieldValues) => {
     console.log(data)
@@ -19,7 +18,6 @@ const Register = () => {
       const response = await registerUser(data).unwrap();
       console.log(response);
       toast.success("Register successful!", { id: toastId, duration: 2000 });
-      reset();
       // Optionally, you can handle further actions after successful registration
     } catch (error: any) {
       console.log()
