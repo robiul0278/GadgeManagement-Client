@@ -1,131 +1,131 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Col, Row } from "antd";
-import { FieldValues } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import CreateInput from "../../../components/createGadgetForm/CreateInput";
-import { useSingleProductQuery, useUpdateGadgetMutation } from "../../../redux/features/product/productApi";
-import SelectInput from "../../../components/createGadgetForm/SelectInput";
-import CreateForm from "../../../components/createGadgetForm/CreateForm";
+import {
+  useSingleProductQuery,
+} from "../../../redux/features/product/productApi";
 import { useParams } from "react-router-dom";
 
 const UpdateGadget = () => {
-
-    const [UpdateGadget] = useUpdateGadgetMutation();
-
+  const { register ,handleSubmit} = useForm();
 
     const {id} = useParams();
     const {data:{data: product} = {}, isLoading}  = useSingleProductQuery(id)
-    // console.log(productById)
-
-
-
+    // console.log(product)
 
     if (isLoading) {
       return toast.loading("Loading gadgets...!");
     }
 
-  const onSubmit = async (data: FieldValues) => {
-    const toastId = toast.loading("Creating Gadget!");
 
-    console.log(data)
-
-    try {
-
-      const updateInfo = {
-        name: data.product_name,
-        price:parseFloat(data.price),
-        quantity:parseFloat(data.quantity),
-        brand:data.brand,
-        model_number: data.model_number,
-        category: data.category,
-        operating_system: data.operating_system,
-        connectivity: data.connectivity,
-        power_source: data.power_source,
-        features: data.features,
-      };
-
-      console.log(updateInfo)
-      const response = await UpdateGadget(updateInfo).unwrap();
-      console.log(response);
-      toast.success("Register successful!", { id: toastId, duration: 2000 });
-
-
-    } catch (error: any) {
-      console.log(error)
-      toast.error(`Something went wrong! ${error?.data?.message} !`, { id: toastId, duration: 2000 });
-    }
-  };
-
+    const onSubmit = (data: FieldValues) => {
+      console.log(data);
+    };
   return (
     <div
       className="shadow rounded p-5 w-7xl"
       style={{ border: "1px solid gray" }}
     >
       <h1 className="text-center">Create a New Electronics Gadget</h1>
-      <CreateForm onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col className="colInput" span={8}>
-            <CreateInput type="text" name="product_name" label="Product Name" defaultValue={product?.name} />
-          </Col>
-          <Col className="colInput" span={8}>
-            <CreateInput type="number" name="price" label="Price" defaultValue={product?.price}/>
-          </Col>
-          <Col className="colInput" span={8}>
-            <CreateInput type="number" name="quantity" label="Quantity" defaultValue={product?.quantity} />
-          </Col>
-          <Col className="colInput" span={8}>
-            <SelectInput
-            defaultValue={product?.brand}
-              type="select"
-              name="brand"
-              label="Select Brand"
-              options={[
-                { label: "Apple", value: "Apple" },
-                { label: "Sony", value: "Sony" },
-                { label: "Samsung", value: "Samsung" },
-                { label: "Logitech", value: "Logitech" },
-                { label: "HyperX", value: "HyperX" },
-              ]}
-            />
-          </Col>
-          <Col className="colInput" span={8}>
-            <CreateInput type="text" name="model_number" label="Model Number"  defaultValue={product?.model_number}/>
-          </Col>
-          <Col className="colInput" span={8}>
-            <SelectInput
-             defaultValue={product?.category}
-              type="select"
-              name="category"
-              label="Select Category"
-              options={[
-                { label: "Smartphones", value: "Smartphones" },
-                { label: "Laptops", value: "Laptops" },
-                { label: "Smartwatches", value: "Smartwatches" },
-                { label: "Earbuds", value: "Earbuds" },
-                { label: "Mouse", value: "Mouse" },
-              ]}
-            />
-          </Col>
-          <Col className="colInput" span={8}>
-            <CreateInput
-             defaultValue={product?.operating_system}
+            <label htmlFor="product_name">Name</label> <br />
+            <input
               type="text"
-              name="operating_system"
-              label="Operating System"
+              id="product_name"
+              defaultValue={product?.name}
+              {...register("username", { required: true })}
             />
           </Col>
           <Col className="colInput" span={8}>
-            <CreateInput type="text" name="connectivity" label="Connectivity"  defaultValue={product?.connectivity}/>
+            <label htmlFor="username">Price</label> <br />
+            <input
+              type="text"
+              id="price"
+              defaultValue={product?.price}
+              {...register("price", { required: true })}
+            />
           </Col>
           <Col className="colInput" span={8}>
-            <CreateInput type="text" name="power_source" label="Power Source"  defaultValue={product?.power_source}/>
+            <label htmlFor="username">Quantity</label><br />
+            <input
+              type="text"
+              id="quantity"
+              defaultValue={product?.quantity}
+              {...register("quantity", { required: true })}
+            />
           </Col>
           <Col className="colInput" span={8}>
-            <CreateInput type="text" name="features" label="Features"  defaultValue={product?.features}/>
+             <label htmlFor="apple">Select Category</label><br />
+            <select id="apple" defaultValue={product?.brand} {...register("brand", { required: true })}>
+              <option value="apple">Apple</option>
+              <option value="sony">Sony</option>
+              <option value="samsung">Samsung</option>
+              <option value="logitech">Logitech</option>
+              <option value="hyperX">HyperX</option>
+            </select>
+          </Col>
+          <Col className="colInput" span={8}>
+            <label htmlFor="model_number">Model Number</label> <br />
+            <input
+              type="text"
+              id="model_number"
+              defaultValue={product?.model_number}
+              {...register("model_number", { required: true })}
+            />
+          </Col>
+          <Col className="colInput" span={8}>
+            <label htmlFor="smartphones">Select Category</label> <br />
+            <select id="smartphones" defaultValue={product?.category} {...register("category", { required: true })}>
+              <option value="smartphones">Smartphones</option>
+              <option value="laptops">Laptops</option>
+              <option value="smartwatches">Smartwatches</option>
+              <option value="earbuds">Earbuds</option>
+              <option value="mouse">Mouse</option>
+            </select>
+          </Col>
+          <Col className="colInput" span={8}>
+            <label htmlFor="operating_system">Operating System</label><br />
+            <input
+              type="text"
+              id="operating_system"
+              defaultValue={product?.operating_system}
+              {...register("operating_system", { required: true })}
+            />
+          </Col>
+          <Col className="colInput" span={8}>
+            <label htmlFor="connectivity">Connectivity</label><br />
+            <input
+              type="text"
+              id="connectivity"
+              defaultValue={product?.connectivity}
+              {...register("connectivity", { required: true })}
+            />
+          </Col>
+          <Col className="colInput" span={8}>
+            <label htmlFor="power_source">Power Source</label><br />
+            <input
+              type="text"
+              id="power_source"
+              defaultValue={product?.power_source}
+              {...register("power_source", { required: true })}
+            />
+          </Col>
+          <Col className="colInput" span={8}>
+            <label htmlFor="product_name">Features</label><br />
+            <input
+            className="p-2"
+              type="text"
+              id="product_name"
+              defaultValue={product?.features}
+              {...register("features", { required: true })}
+            />
           </Col>
         </Row>
         <Button htmlType="submit">Update</Button>
-      </CreateForm>
+      </form>
     </div>
   );
 };

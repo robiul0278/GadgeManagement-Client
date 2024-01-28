@@ -1,8 +1,8 @@
 import UserDashboard from "../pages/user/UserDashboard";
 import CreateGadget from "../pages/user/gadgetsManagement/CreateGadget";
 import AllGadgets from "../pages/user/gadgetsManagement/AllGadgets";
-import UpdateGadget from "../pages/user/gadgetsManagement/UpdateGadget";
 import AllSalesGadgets from "../pages/user/salesManagement/AllSalesGadget";
+import UpdateGadget from "../pages/user/gadgetsManagement/UpdateGadget";
 
 export const userPaths = [
   {
@@ -25,7 +25,7 @@ export const userPaths = [
       },
       {
         path: `update-gadget/:id`,
-        element: <UpdateGadget />,
+        element: <UpdateGadget/>,
       },
     ],
   },
