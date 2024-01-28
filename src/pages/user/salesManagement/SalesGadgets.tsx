@@ -23,7 +23,7 @@ interface DataType {
 }
 
 const AllSalesGadgets = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const { data: allGadgets, isLoading, error } = useAllGadgetQuery({});
   const [CreateSales] = useCreateSalesMutation();
   const [saleProductId, setSaleProductId] = useState();
@@ -159,11 +159,12 @@ const AllSalesGadgets = () => {
       const saleInfo = {
         name: data.buyer_name,
         quantity:parseFloat(data.quantity),
-        date: new Date(),
+        date: data.sale_date,
       };
       const response = await CreateSales(saleInfo).unwrap();
       console.log(response);
       toast.success("Sales successful!", { id: toastId, duration: 2000 });
+      reset()
       // Optionally, you can handle further actions after successful registration
     } catch (error: any) {
       console.log()

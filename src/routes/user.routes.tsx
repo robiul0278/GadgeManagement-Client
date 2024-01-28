@@ -1,7 +1,7 @@
 import UserDashboard from "../pages/user/UserDashboard";
 import CreateGadget from "../pages/user/gadgetsManagement/CreateGadget";
 import AllGadgets from "../pages/user/gadgetsManagement/AllGadgets";
-import AllSalesGadgets from "../pages/user/salesManagement/AllSalesGadget";
+import AllSalesGadgets from "../pages/user/salesManagement/SalesGadgets";
 import UpdateGadget from "../pages/user/gadgetsManagement/UpdateGadget";
 
 export const userPaths = [
