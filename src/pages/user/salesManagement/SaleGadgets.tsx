@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Table, Modal, Row } from "antd";
+import { Button, Table, Modal, Row, Skeleton } from "antd";
 import { useAllGadgetQuery } from "../../../redux/features/product/productApi";
 import { SerializedError } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-
 import React, { useState } from "react";
-import type { TableColumnsType, TableProps } from "antd";
+import type { TableColumnsType, } from "antd";
 import { TGadget } from "../../../types/types";
 import LoginInput from "../../../components/authForm/LoginInput";
 import LoginForm from "../../../components/authForm/LoginForm";
@@ -13,7 +12,6 @@ import { FieldValues, useForm } from "react-hook-form";
 import { Col } from "antd";
 import { useCreateSalesMutation } from "../../../redux/features/sales/salesApi";
 
-type TableRowSelection<T> = TableProps<T>["rowSelection"];
 
 interface DataType {
   key: React.Key;
@@ -22,7 +20,7 @@ interface DataType {
   address: string;
 }
 
-const AllSalesGadgets = () => {
+const SaleGadgets = () => {
   const { register, handleSubmit, reset } = useForm();
   const { data: allGadgets, isLoading, error } = useAllGadgetQuery({});
   const [CreateSales] = useCreateSalesMutation();
@@ -121,10 +119,8 @@ const AllSalesGadgets = () => {
     return acc;
   }, []);
 
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-
   if (isLoading) {
-    return toast.loading("Loading gadgets...!");
+    return <Skeleton active />;
   }
 
   if (error) {
@@ -132,20 +128,6 @@ const AllSalesGadgets = () => {
       (error as SerializedError).message || "An error occurred.";
     return <p>Error fetching gadgets: {errorMessage}</p>;
   }
-
-  const onSelectChange = (newSelectedRowKeys: any) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-
-  const rowSelection: TableRowSelection<DataType> = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-    selections: [Table.SELECTION_ALL],
-    
-  };
-
-
 
 
   // Modal data =====================================
@@ -238,7 +220,6 @@ const AllSalesGadgets = () => {
         </LoginForm>
       </div>
       <Table
-        rowSelection={rowSelection}
         columns={columns}
         dataSource={allData}
       />
@@ -246,4 +227,4 @@ const AllSalesGadgets = () => {
   );
 };
 
-export default AllSalesGadgets;
+export default SaleGadgets;

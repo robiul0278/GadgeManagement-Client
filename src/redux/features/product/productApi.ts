@@ -11,10 +11,10 @@ const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["AllGadget"]
     }),
     updateGadget: builder.mutation({
-      query: (id) => ({
-        url: `/products/update-product/${id}`,
+      query: (data) => ({
+        url: `/products/update-product/${data.id}`,
         method: 'PUT',
-        body: id,
+        body: data.updateInfo,
       }),
       invalidatesTags: ["AllGadget"]
     }),

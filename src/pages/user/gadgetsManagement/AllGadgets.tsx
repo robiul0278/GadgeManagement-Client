@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Space, Table } from "antd";
+import { Button, Skeleton, Space, Table } from "antd";
 import {
   useAllGadgetQuery,
   useBulkDeleteMutation,
@@ -7,11 +7,10 @@ import {
 } from "../../../redux/features/product/productApi";
 import { TGadget } from "../../../types/types";
 import { SerializedError } from "@reduxjs/toolkit";
-import { toast } from "sonner";
-
 import React, { useState } from "react";
 import type { TableColumnsType, TableProps } from "antd";
 import { Link } from "react-router-dom";
+import { CopyOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 type TableRowSelection<T> = TableProps<T>["rowSelection"];
 
@@ -75,18 +74,21 @@ const AllGadgets = () => {
 
       render: (_: any, record: any) => (
         <Space>
-          <Button size="small" type="primary">
-            <Link to={`/user/update-gadget/${record._id}`}>Update</Link>
+          <Button size="small" type="dashed">
+            <Link to={`/user/update-gadget/${record._id}`}><EditOutlined /></Link>
+          </Button>
+          <Button size="small" type="dashed">
+            <Link to={`/user/duplicate-gadget/${record._id}`}><CopyOutlined /></Link>
           </Button>
           <Button
             size="small"
-            type="primary"
+            type="dashed"
             onClick={() => {
               // setModalOpen(true);
               handleDelete(record._id);
             }}
           >
-            Delete
+            <DeleteOutlined />
           </Button>
         </Space>
       ),
@@ -122,7 +124,7 @@ const AllGadgets = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
   if (isLoading) {
-    return toast.loading("Loading gadgets...!");
+    return <Skeleton active />;
   }
 
   if (error) {
@@ -151,7 +153,7 @@ const AllGadgets = () => {
 
   return (
     <>
-     <h1 className="text-center">Create a New Electronics Gadget</h1>
+     <h1 className="text-center">All Electronics Gadgets</h1>
       <hr />
       <div style={{ marginBottom: 10, marginTop: 10 }}>
         <Button type="primary" onClick={handleBulkDelete}>

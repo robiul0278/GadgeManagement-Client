@@ -1,8 +1,10 @@
 import UserDashboard from "../pages/user/UserDashboard";
 import CreateGadget from "../pages/user/gadgetsManagement/CreateGadget";
 import AllGadgets from "../pages/user/gadgetsManagement/AllGadgets";
-import AllSalesGadgets from "../pages/user/salesManagement/SalesGadgets";
 import UpdateGadget from "../pages/user/gadgetsManagement/UpdateGadget";
+import SaleGadgets from "../pages/user/salesManagement/SaleGadgets";
+import SalesHistory from "../pages/user/salesManagement/SalesHistory";
+import CreateVariant from "../pages/user/gadgetsManagement/CreateVariant";
 
 export const userPaths = [
   {
@@ -14,7 +16,7 @@ export const userPaths = [
     name: "Gadgets Management",
     children: [
       {
-        name: "Add a New Gadget",
+        name: "Create Gadget",
         path: "create-gadget",
         element: <CreateGadget />,
       },
@@ -24,8 +26,12 @@ export const userPaths = [
         element: <AllGadgets />,
       },
       {
-        path: `update-gadget/:id`,
+        path: `update-gadget/:gadgetId`,
         element: <UpdateGadget/>,
+      },
+      {
+        path: `duplicate-gadget/:gadgetId`,
+        element: <CreateVariant/>,
       },
     ],
   },
@@ -33,9 +39,14 @@ export const userPaths = [
     name: "Sales Management",
     children: [
       {
-        name: "All Sales Gadgets",
-        path: "sales-gadget",
-        element: <AllSalesGadgets/>,
+        name: "Sale Gadgets",
+        path: "sale-gadgets",
+        element: <SaleGadgets/>,
+      },
+      {
+        name: "Sales History",
+        path: "sale-history",
+        element: <SalesHistory/>,
       },
  
     ],

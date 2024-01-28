@@ -3,23 +3,24 @@ import { Button, Col, Row, Skeleton } from "antd";
 import { FieldValues, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
-  useSingleProductQuery, useUpdateGadgetMutation,
+    useCreateGadgetMutation,
+  useSingleProductQuery
 } from "../../../redux/features/product/productApi";
 import { useParams } from "react-router-dom";
 
-const UpdateGadget = () => {
+const CreateVariant = () => {
   const { register ,handleSubmit} = useForm();
 
     const {gadgetId} = useParams();
     const {data:{data: product} = {}, isLoading}  = useSingleProductQuery(gadgetId)
-    const [UpdateGadget] = useUpdateGadgetMutation()
+    const [DuplicateVariant] = useCreateGadgetMutation()
     // console.log(product)
 
     if (isLoading) {
       return <Skeleton active />;
     }
     const onSubmit = async (data: FieldValues) => {
-      const toastId = toast.loading("Updating user!");
+      const toastId = toast.loading("Creating variant!");
   
       try {
 
@@ -39,10 +40,10 @@ const UpdateGadget = () => {
         console.log(updateInfo)
 
 
-        const res = await UpdateGadget({data: updateInfo, id: gadgetId}).unwrap();
+        const res = await DuplicateVariant(updateInfo).unwrap();
         console.log(res.data)
         if(res.success){
-          toast.success("Gadget Update successful!", { id: toastId, duration: 2000 });
+          toast.success("Gadget create successful!", { id: toastId, duration: 2000 });
         }
       } catch (error: any) {
         console.log()
@@ -55,7 +56,7 @@ const UpdateGadget = () => {
       className="shadow rounded p-5 w-7xl"
       style={{ border: "1px solid gray" }}
     >
-      <h1 className="text-center">Update Electronics Gadget</h1>
+      <h1 className="text-center">Create Duplicate Variant Electronics Gadget</h1>
       <hr />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Row>
@@ -166,4 +167,4 @@ const UpdateGadget = () => {
   );
 };
 
-export default UpdateGadget;
+export default CreateVariant;

@@ -40,3 +40,12 @@ export type TGadget = {
     features: string,
     isDeleted?: boolean,
 }
+
+
+export type TSales = {
+  key: string;
+  _id: string;
+  name: string;
+  quantity: number;
+  date: string;
+}

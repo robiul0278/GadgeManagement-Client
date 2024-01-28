@@ -29,13 +29,12 @@ const CreateGadget = () => {
         features: data.features,
       };
 
-      const response = await CreateGadget(createInfo).unwrap();
-      console.log(response)
-      // console.log(createInfo);
+      const res = await CreateGadget(createInfo).unwrap();
+      if (res.success) {
       toast.success("Gadget Create successful!", { id: toastId, duration: 2000 });
+      }
      
     } catch (error: any) {
-      console.log(error)
       toast.error(`Something went wrong! ${error?.data?.message} !`, { id: toastId, duration: 2000 });
     }
   };
