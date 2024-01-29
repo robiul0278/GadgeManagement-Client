@@ -61,35 +61,35 @@ const SaleGadgets = () => {
       dataIndex: "price",
     },
     {
-      title: "brand",
+      title: "Brand",
       dataIndex: "brand",
     },
     {
-      title: "quantity",
+      title: "Quantity",
       dataIndex: "quantity",
     },
     {
-      title: "model_number",
+      title: "Model_Number",
       dataIndex: "model_number",
     },
     {
-      title: "category",
+      title: "Category",
       dataIndex: "category",
     },
     {
-      title: "connectivity",
+      title: "Connectivity",
       dataIndex: "connectivity",
     },
     {
-      title: "power_source",
+      title: "Power_Source",
       dataIndex: "power_source",
     },
     {
-      title: "operating_system",
+      title: "Operating_System",
       dataIndex: "operating_system",
     },
     {
-      title: "features",
+      title: "Features",
       dataIndex: "features",
     },
 

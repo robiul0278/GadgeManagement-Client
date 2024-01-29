@@ -24,19 +24,19 @@ const UpdateGadget = () => {
       try {
 
         const updateInfo = {
-          name: data.name,
-          price:parseFloat(data.price),
-          quantity:parseFloat(data.quantity),
-          brand:data.brand,
-          model_number: data.model_number,
-          category: data.category,
-          operating_system: data.operating_system,
-          connectivity: data.connectivity,
-          power_source: data.power_source,
-          features: data.features,
+          name: data.name || product.name,
+          price:parseFloat(data.price) || parseFloat(product.price),
+          quantity:parseFloat(data.quantity) || parseFloat(product.quantity),
+          brand:data.brand || product.brand,
+          model_number: data.model_number || product.model_number,
+          category: data.category || product.category,
+          operating_system: data.operating_system || product.operating_system,
+          connectivity: data.connectivity || product.connectivity,
+          power_source: data.power_source || product.power_source,
+          features: data.features || product.features,
         };
 
-        // console.log(updateInfo)
+        console.log(updateInfo)
 
 
         const res = await UpdateGadget({data: updateInfo, id: gadgetId}).unwrap();

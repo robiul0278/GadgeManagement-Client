@@ -11,19 +11,12 @@ export type TSidebarItem = {
 };
 
 export type TUserPath = {
-  name?: string;
+  name: string;
   path?: string;
   element?: ReactNode;
   children?: TUserPath[];
+  hidden?: boolean;
 };
-
-
-export type TSidebarItems = {
-    key: string;
-    label: ReactNode;
-    children?: TSidebarItems[]
-}
-
 
 export type TGadget = {
     key: string,

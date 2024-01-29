@@ -26,10 +26,14 @@ export const userPaths = [
         element: <AllGadgets/>,
       },
       {
+        hidden:true,
+        name: "Update Gadget",
         path: `update-gadget/:gadgetId`,
         element: <UpdateGadget/>,
       },
       {
+        hidden:true,
+        name: "Duplicate Gadget",
         path: `duplicate-gadget/:gadgetId`,
         element: <CreateVariant/>,
       },

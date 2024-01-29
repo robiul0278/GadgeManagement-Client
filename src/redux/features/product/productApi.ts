@@ -14,7 +14,7 @@ const authApi = baseApi.injectEndpoints({
       query: (updateInfo) => ({
         url: `/products/update-product/${updateInfo.id}`,
         method: 'PUT',
-        body: updateInfo,
+        body: updateInfo.data,
       }),
       invalidatesTags: ["AllGadget"]
     }),
