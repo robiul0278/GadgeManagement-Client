@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Table, Modal, Row, Skeleton } from "antd";
-import { useAllGadgetQuery } from "../../../redux/features/product/productApi";
+import { useAllGadgetQuery, useSingleProductQuery, useUpdateGadgetMutation } from "../../../redux/features/product/productApi";
 import { SerializedError } from "@reduxjs/toolkit";
 import { toast } from "sonner";
 import React, { useState } from "react";
@@ -20,10 +20,12 @@ interface DataType {
 const SaleGadgets = () => {
   const { register, handleSubmit, reset } = useForm();
   const { data: allGadgets, isLoading, error } = useAllGadgetQuery({});
+  const [UpdateQuantity] = useUpdateGadgetMutation();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [CreateSales] = useCreateSalesMutation();
-  const [saleProductId, setSaleProductId] = useState();
-  console.log(saleProductId);
+  const [gadgetId, setSaleProductId] = useState();
+  const {data:{data: quantityProduct} = {},}  = useSingleProductQuery(gadgetId)
+  console.log(quantityProduct);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -45,6 +47,9 @@ const SaleGadgets = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+
+
 
   const columns: TableColumnsType<DataType> = [
     {
@@ -107,29 +112,7 @@ const SaleGadgets = () => {
     },
   ];
 
-  // const allData = allGadgets?.data?.reduce(
-  //   (acc: TGadget[], item: TGadget) => {
-  //     if (!item.isDeleted && item.quantity > 0) {
-  //       acc.push({
-  //         key: item._id,
-  //         _id: item._id,
-  //         name: item.name,
-  //         model_number: item.model_number,
-  //         price: item.price,
-  //         brand: item.brand,
-  //         quantity: item.quantity,
-  //         category: item.category,
-  //         operating_system: item.operating_system,
-  //         connectivity: item.connectivity,
-  //         features: item.features,
-  //         power_source: item.power_source,
-  //       });
-  //     }
 
-  //     return acc;
-  //   },
-  //   []
-  // );
 
   if (isLoading) {
     return <Skeleton active />;
@@ -145,14 +128,29 @@ const SaleGadgets = () => {
 
   const onSubmit = async (data: FieldValues) => {
     console.log("data", data);
-    const toastId = toast.loading("Registering user!");
+    const toastId = toast.loading("sale gadgets!");
 
     try {
       const saleInfo = {
         name: data.buyer_name,
+        // calculate quantity
         quantity: parseFloat(data.quantity),
-        date: data.sale_date,
+        date: new Date(),
       };
+
+
+      if (quantityProduct.quantity < saleInfo.quantity) {
+        toast.error("Requested quantity exceeds available stock!", { id: toastId, duration: 2000 });
+        return; // Stop further execution
+      }
+
+
+          // Update the quantity of the product
+    const updatedQuantity = quantityProduct.quantity - saleInfo.quantity;
+    const updateInfo = { ...quantityProduct, quantity: updatedQuantity };
+    await UpdateQuantity({ id: gadgetId, data: updateInfo });
+
+
       const response = await CreateSales(saleInfo).unwrap();
       console.log(response);
       toast.success("Sales successful!", { id: toastId, duration: 2000 });

@@ -26,6 +26,7 @@ const CreateGadget = () => {
         connectivity: data.connectivity,
         power_source: data.power_source,
         features: data.features,
+        release_date: new Date()
       };
 
       const res = await CreateGadget(createInfo).unwrap();
@@ -117,7 +118,7 @@ const CreateGadget = () => {
                 { label: "Laptops", value: "laptops" },
                 { label: "Smartwatches", value: "smartwatches" },
                 { label: "Tablets", value: "tablets" },
-                { label: "Camera", value: "cameras" },
+                { label: "Smart TV", value: "smart tv" },
               ]}
             />
           </Col>
@@ -127,7 +128,7 @@ const CreateGadget = () => {
               name="operating_system"
               label="Operating System"
               options={[
-                { label: "iOS", value: "ios" },
+                { label: "IOS", value: "ios" },
                 { label: "Android", value: "android" },
                 { label: "Windows", value: "windows" },
               ]}

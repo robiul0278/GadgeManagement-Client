@@ -23,7 +23,7 @@ export const userPaths = [
       {
         name: "All Gadgets",
         path: "all-gadget",
-        element: <AllGadgets />,
+        element: <AllGadgets/>,
       },
       {
         path: `update-gadget/:gadgetId`,

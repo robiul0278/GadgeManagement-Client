@@ -35,6 +35,7 @@ const CreateVariant = () => {
           connectivity: data.connectivity,
           power_source: data.power_source,
           features: data.features,
+          release_date: new Date()
         };
 
         console.log(updateInfo)
@@ -136,7 +137,7 @@ const CreateVariant = () => {
             <select className="gInput" id="operating_system" defaultValue={product?.operating_system} {...register("operating_system", { required: true })}>
               <option value="windows">Windows</option>
               <option value="Android">Android</option>
-              <option value="ios">iOS</option>
+              <option value="ios">IOS</option>
             </select>
           </Col>
           <Col className="colInput" span={8}>

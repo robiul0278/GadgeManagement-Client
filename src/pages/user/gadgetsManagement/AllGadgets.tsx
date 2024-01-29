@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button,Skeleton, Space, Table } from "antd";
+import { Button, Skeleton, Space, Table } from "antd";
 import {
   useAllGadgetQuery,
   useBulkDeleteMutation,
@@ -12,8 +12,6 @@ import type { TableColumnsType, TableProps } from "antd";
 import { Link } from "react-router-dom";
 import { CopyOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
-type TableRowSelection<T> = TableProps<T>["rowSelection"];
-
 interface DataType {
   key: React.Key;
   name: string;
@@ -21,10 +19,29 @@ interface DataType {
   address: string;
 }
 
+type TableRowSelection<T> = TableProps<T>["rowSelection"];
+
 const AllGadgets = () => {
   const { data: allGadgets, isLoading, error } = useAllGadgetQuery({});
   const [BulkDelete] = useBulkDeleteMutation();
   const [DeleteProduct] = useDeleteMutation();
+
+
+  const [filters, setFilters] = useState({
+    priceMin: "",
+    priceMax: "",
+    releaseDateMin: "",
+    releaseDateMax: "",
+    brand: "",
+    category: "",
+    operatingSystem: "",
+    connectivity: "",
+  });
+
+  const handleFilterChange = (e: any) => {
+    const { id, value } = e.target;
+    setFilters({ ...filters, [id]: value });
+  };
 
   const columns: TableColumnsType<DataType> = [
     {
@@ -88,7 +105,6 @@ const AllGadgets = () => {
             size="small"
             type="dashed"
             onClick={() => {
-              // setModalOpen(true);
               handleDelete(record._id);
             }}
           >
@@ -101,10 +117,30 @@ const AllGadgets = () => {
 
   const handleDelete = async (id: string) => {
     await DeleteProduct(id);
-    // console.log(res);
   };
 
-  const allData = allGadgets?.data?.reduce((acc: TGadget[], item: TGadget) => {
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+
+
+  const filteredData = allGadgets?.data?.filter((item: TGadget) => {
+    return (
+      (!filters.priceMin || item.price >= parseFloat(filters.priceMin)) &&
+      (!filters.priceMax || item.price <= parseFloat(filters.priceMax)) &&
+      (!filters.releaseDateMin ||
+        item.release_date >= filters.releaseDateMin) &&
+      (!filters.releaseDateMax ||
+        item.release_date <= filters.releaseDateMax) &&
+      (!filters.brand || item.brand === filters.brand) &&
+      (!filters.category || item.category === filters.category) &&
+      (!filters.operatingSystem ||
+        item.operating_system === filters.operatingSystem) &&
+      (!filters.connectivity || item.connectivity === filters.connectivity)
+    );
+  });
+
+  console.log(filteredData)
+
+  const allData = filteredData?.reduce((acc: TGadget[], item: TGadget) => {
     if (!item.isDeleted && item.quantity > 0) {
       acc.push({
         key: item._id,
@@ -119,13 +155,12 @@ const AllGadgets = () => {
         power_source: item.power_source,
         operating_system: item.operating_system,
         features: item.features,
+        release_date: item.release_date
       });
     }
 
     return acc;
   }, []);
-
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
   if (isLoading) {
     return <Skeleton active />;
@@ -164,58 +199,91 @@ const AllGadgets = () => {
           <h3 className="text-center">Filtered Your Data</h3>
           <hr />
           <form className="p-2" style={{ marginBottom: 10, marginTop: 10 }}>
-            <label htmlFor="price">Price Range</label>
+            <label className="bold" htmlFor="price">
+              Filter by Price Range:
+            </label>
             <div className="flex mt-1 mb-2">
               <input
                 style={{ width: "140px", padding: "8px" }}
                 type="number"
-                id="price"
+                id="priceMin"
                 placeholder="min"
+                onChange={handleFilterChange}
               />
               <input
                 style={{ width: "140px", padding: "8px" }}
                 type="number"
-                id="price"
+                id="priceMax"
                 placeholder="max"
+                onChange={handleFilterChange}
               />
             </div>
-            <label htmlFor="date">release Date</label>
+            <div>
+              <label className="bold" htmlFor="date">
+                Filter Release Date :
+              </label>
+              <br />
+              <label htmlFor="releaseDateMin">Minimum </label>
+              <input
+                className="mb-2"
+                style={{ padding: "8px" }}
+                type="date"
+                id="releaseDateMin"
+                onChange={handleFilterChange}
+              />{" "}
+              <br />
+              <label htmlFor="releaseDateMax">Maximum </label>
+              <input
+                className="mb-2"
+                style={{ padding: "8px" }}
+                type="date"
+                id="releaseDateMax"
+                onChange={handleFilterChange}
+              />{" "}
+              <br />
+            </div>
+            <label className="bold" htmlFor="brand">
+              Filter by Brand :
+            </label>
             <br />
-            <input className="mb-2" style={{ padding: "8px", width:"280px" }} type="date" id="date" /> <br />
-            <label htmlFor="samsung">Filter by Brand</label>
-            <br />
-            <select id="samsung">
-              <option selected >select brand</option>
+            <select id="brand" onChange={handleFilterChange}>
+              <option value="">Select brand</option>
               <option value="samsung">Samsung</option>
-              <option  value="hyperX">HyperX</option>
+              <option value="hyperX">HyperX</option>
               <option value="logitech">Logitech</option>
               <option value="apple">Apple</option>
               <option value="sony">Sony</option>
             </select>
-            <label htmlFor="mouse">Filter by Category</label>
+            <label className="bold" htmlFor="category">
+              Filter by Category :
+            </label>
             <br />
-            <select id="mouse">
-              <option selected >select category</option>
-              <option value="Mouse">Mouse</option>
-              <option value="Earbuds">Earbuds</option>
-              <option value="Laptops">Laptops</option>
-              <option value="Smartphones">Smartphones</option>
-              <option value="Smartwatches">Smartwatches</option>
+            <select id="category" onChange={handleFilterChange}>
+              <option value="">Select category</option>
+              <option value="tablets">Tablets</option>
+              <option value="smart tv">Smart TV</option>
+              <option value="laptops">Laptops</option>
+              <option value="smartphones">Smartphones</option>
+              <option value="smartwatches">Smartwatches</option>
             </select>
-            <label htmlFor="windows">Filter by Operating System</label>
+            <label className="bold" htmlFor="operatingSystem">
+              Filter by Operating System :
+            </label>
             <br />
-            <select id="windows">
-              <option selected>select operating system</option>
-              <option value="Windows">Windows</option>
-              <option value="Android">Android</option>
-              <option value="iOS">iOS</option>
+            <select id="operatingSystem" onChange={handleFilterChange}>
+              <option value="">Select operating system</option>
+              <option value="windows">Windows</option>
+              <option value="android">Android</option>
+              <option value="ios">IOS</option>
             </select>
-            <label htmlFor="bluetooth">Filter by Connectivity</label>
+            <label className="bold" htmlFor="connectivity">
+              Filter by Connectivity :
+            </label>
             <br />
-            <select id="bluetooth">
-              <option selected>select connectivity</option>
-              <option value="USB-C">USB-C</option>
-              <option value="Wi-Fi">Wi-Fi</option>
+            <select id="connectivity" onChange={handleFilterChange}>
+              <option value="">Select connectivity</option>
+              <option value="usb-c">USB-C</option>
+              <option value="wi-fi">Wi-Fi</option>
               <option value="bluetooth">Bluetooth</option>
             </select>
           </form>

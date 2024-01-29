@@ -29,7 +29,7 @@ export type TGadget = {
     key: string,
     _id: string;
     name: string,
-    price:number,
+    price:number ,
     quantity:number,
     brand:string,
     model_number:string,
@@ -39,6 +39,7 @@ export type TGadget = {
     power_source:string ,
     features: string,
     isDeleted?: boolean,
+    release_date: string,
 }
 
 
@@ -48,4 +49,13 @@ export type TSales = {
   name: string;
   quantity: number;
   date: string;
+}
+
+
+
+export type DataType = {
+  key: React.Key;
+  name: string;
+  age: number;
+  address: string;
 }
