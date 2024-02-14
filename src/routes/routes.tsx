@@ -16,6 +16,11 @@ const router = createBrowserRouter([
     children: routeGenerator(userPaths),
   }, 
   {
+    path: '/manager',
+    element: <App />,
+    children: routeGenerator(userPaths),
+  }, 
+  {
     path: '/login',
     element: <Login />,
   },

@@ -3,53 +3,61 @@ import { Button, Col, Row, Skeleton } from "antd";
 import { FieldValues, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
-  useSingleProductQuery, useUpdateGadgetMutation,
-} from "../../../redux/features/product/productApi";
+  useSingleProductQuery,
+  useUpdateGadgetMutation,
+} from "../../redux/features/product/productApi";
 import { useParams } from "react-router-dom";
 
 const UpdateGadget = () => {
-  const { register ,handleSubmit} = useForm();
+  const { register, handleSubmit } = useForm();
 
-    const {gadgetId} = useParams();
-    const {data:{data: product} = {}, isLoading}  = useSingleProductQuery(gadgetId)
-    const [UpdateGadget] = useUpdateGadgetMutation()
-    // console.log(product)
+  const { gadgetId } = useParams();
+  const { data: { data: product } = {}, isLoading } =
+    useSingleProductQuery(gadgetId);
+  const [UpdateGadget] = useUpdateGadgetMutation();
+  // console.log(product)
 
-    if (isLoading) {
-      return <Skeleton active />;
-    }
-    const onSubmit = async (data: FieldValues) => {
-      const toastId = toast.loading("Updating user!");
-  
-      try {
+  if (isLoading) {
+    return <Skeleton active />;
+  }
+  const onSubmit = async (data: FieldValues) => {
+    const toastId = toast.loading("Updating user!");
 
-        const updateInfo = {
-          name: data.name || product.name,
-          price:parseFloat(data.price) || parseFloat(product.price),
-          quantity:parseFloat(data.quantity) || parseFloat(product.quantity),
-          brand:data.brand || product.brand,
-          model_number: data.model_number || product.model_number,
-          category: data.category || product.category,
-          operating_system: data.operating_system || product.operating_system,
-          connectivity: data.connectivity || product.connectivity,
-          power_source: data.power_source || product.power_source,
-          features: data.features || product.features,
-        };
+    try {
+      const updateInfo = {
+        name: data.name || product.name,
+        price: parseFloat(data.price) || parseFloat(product.price),
+        quantity: parseFloat(data.quantity) || parseFloat(product.quantity),
+        brand: data.brand || product.brand,
+        model_number: data.model_number || product.model_number,
+        category: data.category || product.category,
+        operating_system: data.operating_system || product.operating_system,
+        connectivity: data.connectivity || product.connectivity,
+        power_source: data.power_source || product.power_source,
+        features: data.features || product.features,
+      };
 
-        console.log(updateInfo)
+      console.log(updateInfo);
 
-
-        const res = await UpdateGadget({data: updateInfo, id: gadgetId}).unwrap();
-        console.log(res.data)
-        if(res.success){
-          toast.success("Gadget Update successful!", { id: toastId, duration: 2000 });
-        }
-      } catch (error: any) {
-        console.log()
-        toast.error(`Something went wrong! ${error?.data?.message} !`, { id: toastId, duration: 2000 });
-       
+      const res = await UpdateGadget({
+        data: updateInfo,
+        id: gadgetId,
+      }).unwrap();
+      console.log(res.data);
+      if (res.success) {
+        toast.success("Gadget Update successful!", {
+          id: toastId,
+          duration: 2000,
+        });
       }
-    };
+    } catch (error: any) {
+      console.log();
+      toast.error(`Something went wrong! ${error?.data?.message} !`, {
+        id: toastId,
+        duration: 2000,
+      });
+    }
+  };
   return (
     <div
       className="shadow rounded p-5 w-7xl"
@@ -62,7 +70,7 @@ const UpdateGadget = () => {
           <Col className="colInput" span={8}>
             <label htmlFor="name">Product Name</label> <br />
             <input
-            className="gInput"
+              className="gInput"
               type="text"
               id="name"
               defaultValue={product?.name}
@@ -72,7 +80,7 @@ const UpdateGadget = () => {
           <Col className="colInput" span={8}>
             <label htmlFor="price">Price</label> <br />
             <input
-             style={{ padding: "10px", marginTop:"8px", width: "335px"  }}
+              style={{ padding: "10px", marginTop: "8px", width: "335px" }}
               type="number"
               id="price"
               defaultValue={product?.price}
@@ -80,9 +88,10 @@ const UpdateGadget = () => {
             />
           </Col>
           <Col className="colInput" span={8}>
-            <label htmlFor="quantity">Quantity</label><br />
+            <label htmlFor="quantity">Quantity</label>
+            <br />
             <input
-             style={{ padding: "10px", marginTop:"8px", width: "335px" }}
+              style={{ padding: "10px", marginTop: "8px", width: "335px" }}
               type="number"
               id="quantity"
               defaultValue={product?.quantity}
@@ -90,9 +99,10 @@ const UpdateGadget = () => {
             />
           </Col>
           <Col className="colInput" span={8}>
-            <label htmlFor="product_name">Features</label><br />
+            <label htmlFor="product_name">Features</label>
+            <br />
             <input
-            className="gInput"
+              className="gInput"
               type="text"
               id="product_name"
               defaultValue={product?.features}
@@ -102,7 +112,7 @@ const UpdateGadget = () => {
           <Col className="colInput" span={8}>
             <label htmlFor="model_number">Model Number</label> <br />
             <input
-            className="gInput"
+              className="gInput"
               type="text"
               id="model_number"
               defaultValue={product?.model_number}
@@ -110,8 +120,14 @@ const UpdateGadget = () => {
             />
           </Col>
           <Col className="colInput" span={8}>
-             <label htmlFor="brand">Select Brand</label><br />
-            <select className="gInput" id="brand" defaultValue={product?.brand} {...register("brand", { required: true })}>
+            <label htmlFor="brand">Select Brand</label>
+            <br />
+            <select
+              className="gInput"
+              id="brand"
+              defaultValue={product?.brand}
+              {...register("brand", { required: true })}
+            >
               <option value="apple">Apple</option>
               <option value="sony">Sony</option>
               <option value="samsung">Samsung</option>
@@ -122,7 +138,12 @@ const UpdateGadget = () => {
 
           <Col className="colInput" span={8}>
             <label htmlFor="category">Select Category</label> <br />
-            <select className="gInput" id="category" defaultValue={product?.category} {...register("category", { required: true })}>
+            <select
+              className="gInput"
+              id="category"
+              defaultValue={product?.category}
+              {...register("category", { required: true })}
+            >
               <option value="smartphones">Smartphones</option>
               <option value="laptops">Laptops</option>
               <option value="smartwatches">Smartwatches</option>
@@ -132,7 +153,12 @@ const UpdateGadget = () => {
           </Col>
           <Col className="colInput" span={8}>
             <label htmlFor="operating_system">Operating System</label> <br />
-            <select className="gInput" id="operating_system" defaultValue={product?.operating_system} {...register("operating_system", { required: true })}>
+            <select
+              className="gInput"
+              id="operating_system"
+              defaultValue={product?.operating_system}
+              {...register("operating_system", { required: true })}
+            >
               <option value="windows">Windows</option>
               <option value="android">Android</option>
               <option value="iOS">ios</option>
@@ -140,7 +166,12 @@ const UpdateGadget = () => {
           </Col>
           <Col className="colInput" span={8}>
             <label htmlFor="connectivity">Connectivity</label> <br />
-            <select className="gInput" id="connectivity"   defaultValue={product?.connectivity} {...register("connectivity", { required: true })}>
+            <select
+              className="gInput"
+              id="connectivity"
+              defaultValue={product?.connectivity}
+              {...register("connectivity", { required: true })}
+            >
               <option value="wi-fi">Wi-Fi</option>
               <option value="bluetooth">Bluetooth</option>
               <option value="usb">USB</option>
@@ -148,12 +179,16 @@ const UpdateGadget = () => {
           </Col>
           <Col className="colInput" span={8}>
             <label htmlFor="power_source">Power Source</label> <br />
-            <select className="gInput" id="power_source"   defaultValue={product?.power_source} {...register("power_source", { required: true })}>
+            <select
+              className="gInput"
+              id="power_source"
+              defaultValue={product?.power_source}
+              {...register("power_source", { required: true })}
+            >
               <option value="battery-powered">Battery-powered</option>
               <option value="plug-in">Plug-in</option>
             </select>
           </Col>
-
         </Row>
         <Button htmlType="submit">Update</Button>
       </form>

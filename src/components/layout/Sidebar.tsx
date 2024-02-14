@@ -8,20 +8,26 @@ const { Sider } = Layout;
 
 
 const userRole = {
+  MANAGER: 'manager',
     USER: 'user',
   };
 
 const Sidebar = () => {
 
     const user = useAppSelector(selectCurrentUser);
+    // console.log(user)
     // const role = 'user'
 
     let sidebarItems;
   
     switch (user!.role) {
+      case userRole.MANAGER:
+        sidebarItems = sidebarItemsGenerator(userPaths, userRole.MANAGER);
+        break;
       case userRole.USER:
         sidebarItems = sidebarItemsGenerator(userPaths, userRole.USER);
         break;
+        
       default:
         break;
     }

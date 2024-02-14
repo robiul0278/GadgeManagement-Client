@@ -1,10 +1,10 @@
-import UserDashboard from "../pages/user/UserDashboard";
-import CreateGadget from "../pages/user/gadgetsManagement/CreateGadget";
-import AllGadgets from "../pages/user/gadgetsManagement/AllGadgets";
-import UpdateGadget from "../pages/user/gadgetsManagement/UpdateGadget";
-import SaleGadgets from "../pages/user/salesManagement/SaleGadgets";
-import SalesHistory from "../pages/user/salesManagement/SalesHistory";
-import CreateVariant from "../pages/user/gadgetsManagement/CreateVariant";
+import UserDashboard from "../pages/UserDashboard";
+import CreateGadget from "../pages/gadgetsManagement/CreateGadget";
+import AllGadgets from "../pages/gadgetsManagement/AllGadgets";
+import UpdateGadget from "../pages/gadgetsManagement/UpdateGadget";
+import SaleGadgets from "../pages/salesManagement/SaleGadgets";
+import SalesHistory from "../pages/salesManagement/SalesHistory";
+import CreateVariant from "../pages/gadgetsManagement/CreateVariant";
 
 export const userPaths = [
   {
@@ -23,19 +23,19 @@ export const userPaths = [
       {
         name: "All Gadgets",
         path: "all-gadget",
-        element: <AllGadgets/>,
+        element: <AllGadgets />,
       },
       {
-        hidden:true,
+        hidden: true,
         name: "Update Gadget",
         path: `update-gadget/:gadgetId`,
-        element: <UpdateGadget/>,
+        element: <UpdateGadget />,
       },
       {
-        hidden:true,
+        hidden: true,
         name: "Duplicate Gadget",
         path: `duplicate-gadget/:gadgetId`,
-        element: <CreateVariant/>,
+        element: <CreateVariant />,
       },
     ],
   },
@@ -45,14 +45,13 @@ export const userPaths = [
       {
         name: "Sale Gadgets",
         path: "sale-gadgets",
-        element: <SaleGadgets/>,
+        element: <SaleGadgets />,
       },
       {
         name: "Sales History",
         path: "sale-history",
-        element: <SalesHistory/>,
+        element: <SalesHistory />,
       },
- 
     ],
   },
 ];

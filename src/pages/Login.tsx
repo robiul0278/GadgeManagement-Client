@@ -53,7 +53,8 @@ const Login = () => {
 
 
     <Row justify="center" align="middle" style={{ height: "100vh" }}>
-      <div className="shadow rounded p-5" style={{ border: "1px solid gray" }}>
+      <div className=" rounded p-5" style={{ border: "1px solid gray" }}>
+      <h1 className="pb-5">Please Login !</h1>
         <LoginForm onSubmit={onSubmit} defaultValues={defaultValues}>
           <LoginInput type="text" name="email" label="Email:" />
           <LoginInput type="text" name="password" label="Password" />

@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Table, Modal, Row, Skeleton } from "antd";
-import { useAllGadgetQuery, useSingleProductQuery, useUpdateGadgetMutation } from "../../../redux/features/product/productApi";
+import {
+  useAllGadgetQuery,
+  useSingleProductQuery,
+  useUpdateGadgetMutation,
+} from "../../redux/features/product/productApi";
 import { SerializedError } from "@reduxjs/toolkit";
 import { toast } from "sonner";
 import React, { useState } from "react";
 import type { TableColumnsType } from "antd";
-import { TGadget } from "../../../types/types";
+import { TGadget } from "../../types/types";
 import { FieldValues, useForm } from "react-hook-form";
 import { Col } from "antd";
-import { useCreateSalesMutation } from "../../../redux/features/sales/salesApi";
+import { useCreateSalesMutation } from "../../redux/features/sales/salesApi";
 
 interface DataType {
   key: React.Key;
@@ -24,7 +28,8 @@ const SaleGadgets = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [CreateSales] = useCreateSalesMutation();
   const [gadgetId, setSaleProductId] = useState();
-  const {data:{data: quantityProduct} = {},}  = useSingleProductQuery(gadgetId)
+  const { data: { data: quantityProduct } = {} } =
+    useSingleProductQuery(gadgetId);
   console.log(quantityProduct);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,8 +38,8 @@ const SaleGadgets = () => {
 
   const filteredData = allGadgets?.data?.filter((item: TGadget) => {
     const searchString = Object.values(item)
-      .filter(value => typeof value === 'string') // Filter only string values
-      .join(' ') // Concatenate all string values into a single string
+      .filter((value) => typeof value === "string") // Filter only string values
+      .join(" ") // Concatenate all string values into a single string
       .toLowerCase(); // Convert to lowercase for case-insensitive search
     return searchString.includes(searchQuery.toLowerCase()) && !item.isDeleted;
   });
@@ -47,9 +52,6 @@ const SaleGadgets = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
-
-
 
   const columns: TableColumnsType<DataType> = [
     {
@@ -112,8 +114,6 @@ const SaleGadgets = () => {
     },
   ];
 
-
-
   if (isLoading) {
     return <Skeleton active />;
   }
@@ -138,18 +138,18 @@ const SaleGadgets = () => {
         date: new Date(),
       };
 
-
       if (quantityProduct.quantity < saleInfo.quantity) {
-        toast.error("Requested quantity exceeds available stock!", { id: toastId, duration: 2000 });
+        toast.error("Requested quantity exceeds available stock!", {
+          id: toastId,
+          duration: 2000,
+        });
         return; // Stop further execution
       }
 
-
-          // Update the quantity of the product
-    const updatedQuantity = quantityProduct.quantity - saleInfo.quantity;
-    const updateInfo = { ...quantityProduct, quantity: updatedQuantity };
-    await UpdateQuantity({ id: gadgetId, data: updateInfo });
-
+      // Update the quantity of the product
+      const updatedQuantity = quantityProduct.quantity - saleInfo.quantity;
+      const updateInfo = { ...quantityProduct, quantity: updatedQuantity };
+      await UpdateQuantity({ id: gadgetId, data: updateInfo });
 
       const response = await CreateSales(saleInfo).unwrap();
       console.log(response);

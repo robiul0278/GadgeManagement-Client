@@ -190,6 +190,10 @@ h2 {
   padding: 5px;
   font-weight: 600;
 }
+.colFile {
+  margin-top: -3px;
+  font-weight: 600;
+}
 .authNavigate{
   text-align: center;
   margin-top: 10px;

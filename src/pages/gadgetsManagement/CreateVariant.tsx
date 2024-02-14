@@ -3,68 +3,74 @@ import { Button, Col, Row, Skeleton } from "antd";
 import { FieldValues, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
-    useCreateGadgetMutation,
-  useSingleProductQuery
-} from "../../../redux/features/product/productApi";
+  useCreateGadgetMutation,
+  useSingleProductQuery,
+} from "../../redux/features/product/productApi";
 import { useParams } from "react-router-dom";
 
 const CreateVariant = () => {
-  const { register ,handleSubmit} = useForm();
+  const { register, handleSubmit } = useForm();
 
-    const {gadgetId} = useParams();
-    const {data:{data: product} = {}, isLoading}  = useSingleProductQuery(gadgetId)
-    const [DuplicateVariant] = useCreateGadgetMutation()
-    console.log("Main data",product)
+  const { gadgetId } = useParams();
+  const { data: { data: product } = {}, isLoading } =
+    useSingleProductQuery(gadgetId);
+  const [DuplicateVariant] = useCreateGadgetMutation();
+  console.log("Main data", product);
 
-    if (isLoading) {
-      return <Skeleton active />;
-    }
-    const onSubmit = async (data: FieldValues) => {
-      const toastId = toast.loading("Creating variant!");
-  
-      try {
+  if (isLoading) {
+    return <Skeleton active />;
+  }
+  const onSubmit = async (data: FieldValues) => {
+    const toastId = toast.loading("Creating variant!");
 
-        const updateInfo = {
-          name: data.name,
-          price:parseFloat(data.price),
-          quantity:parseFloat(data.quantity),
-          brand:data.brand,
-          model_number: data.model_number,
-          category: data.category,
-          operating_system: data.operating_system,
-          connectivity: data.connectivity,
-          power_source: data.power_source,
-          features: data.features,
-          release_date: new Date()
-        };
+    try {
+      const updateInfo = {
+        name: data.name,
+        price: parseFloat(data.price),
+        quantity: parseFloat(data.quantity),
+        brand: data.brand,
+        model_number: data.model_number,
+        category: data.category,
+        operating_system: data.operating_system,
+        connectivity: data.connectivity,
+        power_source: data.power_source,
+        features: data.features,
+        release_date: new Date(),
+      };
 
-        console.log(updateInfo)
+      console.log(updateInfo);
 
-
-        const res = await DuplicateVariant(updateInfo).unwrap();
-        console.log(res.data)
-        if(res.success){
-          toast.success("Variant create successful!", { id: toastId, duration: 2000 });
-        }
-      } catch (error: any) {
-        console.log()
-        toast.error(`Something went wrong! ${error?.data?.message} !`, { id: toastId, duration: 2000 });
-       
+      const res = await DuplicateVariant(updateInfo).unwrap();
+      console.log(res.data);
+      if (res.success) {
+        toast.success("Variant create successful!", {
+          id: toastId,
+          duration: 2000,
+        });
       }
-    };
+    } catch (error: any) {
+      console.log();
+      toast.error(`Something went wrong! ${error?.data?.message} !`, {
+        id: toastId,
+        duration: 2000,
+      });
+    }
+  };
   return (
     <div
       className="shadow rounded p-5 w-7xl"
       style={{ border: "1px solid gray" }}
     >
-      <h1 className="text-center">Create Duplicate Variant Electronics Gadget</h1>
+      <h1 className="text-center">
+        Create Duplicate Variant Electronics Gadget
+      </h1>
       <hr />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col className="colInput" span={8}>
             <label htmlFor="name">Product Name</label> <br />
             <input
-            className="gInput"
+              className="gInput"
               type="text"
               id="name"
               defaultValue={product?.name}
@@ -74,7 +80,7 @@ const CreateVariant = () => {
           <Col className="colInput" span={8}>
             <label htmlFor="price">Price</label> <br />
             <input
-             style={{ padding: "10px", marginTop:"8px", width: "335px"  }}
+              style={{ padding: "10px", marginTop: "8px", width: "335px" }}
               type="number"
               id="price"
               defaultValue={product?.price}
@@ -82,9 +88,10 @@ const CreateVariant = () => {
             />
           </Col>
           <Col className="colInput" span={8}>
-            <label htmlFor="quantity">Quantity</label><br />
+            <label htmlFor="quantity">Quantity</label>
+            <br />
             <input
-             style={{ padding: "10px", marginTop:"8px", width: "335px" }}
+              style={{ padding: "10px", marginTop: "8px", width: "335px" }}
               type="number"
               id="quantity"
               defaultValue={product?.quantity}
@@ -92,9 +99,10 @@ const CreateVariant = () => {
             />
           </Col>
           <Col className="colInput" span={8}>
-            <label htmlFor="product_name">Features</label><br />
+            <label htmlFor="product_name">Features</label>
+            <br />
             <input
-            className="gInput"
+              className="gInput"
               type="text"
               id="product_name"
               defaultValue={product?.features}
@@ -104,7 +112,7 @@ const CreateVariant = () => {
           <Col className="colInput" span={8}>
             <label htmlFor="model_number">Model Number</label> <br />
             <input
-            className="gInput"
+              className="gInput"
               type="text"
               id="model_number"
               defaultValue={product?.model_number}
@@ -112,8 +120,14 @@ const CreateVariant = () => {
             />
           </Col>
           <Col className="colInput" span={8}>
-             <label htmlFor="brand">Select Brand</label><br />
-            <select className="gInput" id="brand" defaultValue={product?.brand} {...register("brand", { required: true })}>
+            <label htmlFor="brand">Select Brand</label>
+            <br />
+            <select
+              className="gInput"
+              id="brand"
+              defaultValue={product?.brand}
+              {...register("brand", { required: true })}
+            >
               <option value="apple">Apple</option>
               <option value="sony">Sony</option>
               <option value="samsung">Samsung</option>
@@ -124,7 +138,12 @@ const CreateVariant = () => {
 
           <Col className="colInput" span={8}>
             <label htmlFor="category">Select Category</label> <br />
-            <select className="gInput" id="category" defaultValue={product?.category} {...register("category", { required: true })}>
+            <select
+              className="gInput"
+              id="category"
+              defaultValue={product?.category}
+              {...register("category", { required: true })}
+            >
               <option value="smartphones">Smartphones</option>
               <option value="laptops">Laptops</option>
               <option value="smartwatches">Smartwatches</option>
@@ -134,7 +153,12 @@ const CreateVariant = () => {
           </Col>
           <Col className="colInput" span={8}>
             <label htmlFor="operating_system">Operating System</label> <br />
-            <select className="gInput" id="operating_system" defaultValue={product?.operating_system} {...register("operating_system", { required: true })}>
+            <select
+              className="gInput"
+              id="operating_system"
+              defaultValue={product?.operating_system}
+              {...register("operating_system", { required: true })}
+            >
               <option value="windows">Windows</option>
               <option value="Android">Android</option>
               <option value="ios">IOS</option>
@@ -142,7 +166,12 @@ const CreateVariant = () => {
           </Col>
           <Col className="colInput" span={8}>
             <label htmlFor="connectivity">Connectivity</label> <br />
-            <select className="gInput" id="connectivity"   defaultValue={product?.connectivity} {...register("connectivity", { required: true })}>
+            <select
+              className="gInput"
+              id="connectivity"
+              defaultValue={product?.connectivity}
+              {...register("connectivity", { required: true })}
+            >
               <option value="wi-fi">Wi-Fi</option>
               <option value="bluetooth">Bluetooth</option>
               <option value="usb">USB</option>
@@ -150,12 +179,16 @@ const CreateVariant = () => {
           </Col>
           <Col className="colInput" span={8}>
             <label htmlFor="battery-powered">Power Source</label> <br />
-            <select className="gInput" id="power_source"   defaultValue={product?.power_source} {...register("power_source", { required: true })}>
+            <select
+              className="gInput"
+              id="power_source"
+              defaultValue={product?.power_source}
+              {...register("power_source", { required: true })}
+            >
               <option value="battery-powered">Battery-powered</option>
               <option value="plug-in">Plug-in</option>
             </select>
           </Col>
-
         </Row>
         <Button htmlType="submit">Create Variant</Button>
       </form>

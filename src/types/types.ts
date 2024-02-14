@@ -33,6 +33,7 @@ export type TGadget = {
     features: string,
     isDeleted?: boolean,
     release_date: string,
+    // image: string,
 }
 
 

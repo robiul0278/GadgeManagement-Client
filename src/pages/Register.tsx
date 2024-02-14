@@ -5,10 +5,11 @@ import { toast } from "sonner";
 import { useRegisterMutation } from "../redux/features/auth/authApi";
 import RegisterForm from "../components/authForm/RegisterForm";
 import RegisterInput from "../components/authForm/RegisterInput";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [registerUser] = useRegisterMutation();
+  const navigate = useNavigate()
 
   const onSubmit = async (data: FieldValues) => {
     console.log(data)
@@ -18,6 +19,7 @@ const Register = () => {
       const response = await registerUser(data).unwrap();
       console.log(response);
       toast.success("Register successful!", { id: toastId, duration: 2000 });
+      navigate('/login')
       // Optionally, you can handle further actions after successful registration
     } catch (error: any) {
       console.log()
@@ -28,7 +30,9 @@ const Register = () => {
 
   return (
     <Row justify="center" align="middle" style={{ height: "100vh" }}>
-      <div className="shadow rounded p-5" style={{ border: "1px solid gray" }}>
+      <div className=" rounded p-5" style={{ border: "1px solid gray" }}>
+      <h1 className="pb-5">Please Register !</h1>
+
         <RegisterForm onSubmit={onSubmit}>
           <RegisterInput type="text" name="username" label="Username:" />
           <RegisterInput type="text" name="email" label="Email:" />

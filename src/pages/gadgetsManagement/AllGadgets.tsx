@@ -4,8 +4,8 @@ import {
   useAllGadgetQuery,
   useBulkDeleteMutation,
   useDeleteMutation,
-} from "../../../redux/features/product/productApi";
-import { TGadget } from "../../../types/types";
+} from "../../redux/features/product/productApi";
+import { TGadget } from "../../types/types";
 import { SerializedError } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import type { TableColumnsType, TableProps } from "antd";
@@ -26,7 +26,6 @@ const AllGadgets = () => {
   const [BulkDelete] = useBulkDeleteMutation();
   const [DeleteProduct] = useDeleteMutation();
 
-
   const [filters, setFilters] = useState({
     priceMin: "",
     priceMax: "",
@@ -44,6 +43,10 @@ const AllGadgets = () => {
   };
 
   const columns: TableColumnsType<DataType> = [
+    {
+      title: "Image",
+      dataIndex: "image",
+    },
     {
       title: "Name",
       dataIndex: "name",
@@ -121,7 +124,6 @@ const AllGadgets = () => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
-
   const filteredData = allGadgets?.data?.filter((item: TGadget) => {
     return (
       (!filters.priceMin || item.price >= parseFloat(filters.priceMin)) &&
@@ -138,7 +140,7 @@ const AllGadgets = () => {
     );
   });
 
-  console.log(filteredData)
+  console.log(filteredData);
 
   const allData = filteredData?.reduce((acc: TGadget[], item: TGadget) => {
     if (!item.isDeleted && item.quantity > 0) {
@@ -155,7 +157,7 @@ const AllGadgets = () => {
         power_source: item.power_source,
         operating_system: item.operating_system,
         features: item.features,
-        release_date: item.release_date
+        release_date: item.release_date,
       });
     }
 
