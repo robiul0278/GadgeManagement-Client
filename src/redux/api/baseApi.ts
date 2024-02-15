@@ -43,6 +43,7 @@ import {
   
       if (data?.data?.accessToken) {
         const user = (api.getState() as RootState).auth.user;
+        const cart = (api.getState() as RootState).product.cart;
   
         api.dispatch(
           setUser({
@@ -50,6 +51,12 @@ import {
             token: data.data.accessToken,
           })
         );
+        api.dispatch(
+          setUser({
+           cart,
+          })
+        );
+
   
         result = await baseQuery(args, api, extraOptions);
       } else {

@@ -1,16 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Skeleton, Space, Table } from "antd";
+import { Badge, Button, Skeleton, Space, Table } from "antd";
 import {
   useAllGadgetQuery,
   useBulkDeleteMutation,
   useDeleteMutation,
-} from "../../redux/features/product/productApi";
-import { TGadget } from "../../types/types";
+} from "../../../redux/features/product/productApi";
+import { TGadget } from "../../../types/types";
 import { SerializedError } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import type { TableColumnsType, TableProps } from "antd";
 import { Link } from "react-router-dom";
-import { CopyOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  CopyOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  ShoppingCartOutlined,
+} from "@ant-design/icons";
+import { useAppDispatch } from "../../../redux/hooks";
+import { setCart } from "../../../redux/features/product/productSlice";
 
 interface DataType {
   key: React.Key;
@@ -25,6 +32,7 @@ const AllGadgets = () => {
   const { data: allGadgets, isLoading, error } = useAllGadgetQuery({});
   const [BulkDelete] = useBulkDeleteMutation();
   const [DeleteProduct] = useDeleteMutation();
+  const dispatch = useAppDispatch();
 
   const [filters, setFilters] = useState({
     priceMin: "",
@@ -43,10 +51,6 @@ const AllGadgets = () => {
   };
 
   const columns: TableColumnsType<DataType> = [
-    {
-      title: "Image",
-      dataIndex: "image",
-    },
     {
       title: "Name",
       dataIndex: "name",
@@ -93,27 +97,41 @@ const AllGadgets = () => {
       key: "action",
 
       render: (_: any, record: any) => (
-        <Space>
-          <Button size="small" type="dashed">
+        <div style={{ justifyItems: "center" }}>
+          {/* <Space> */}
+          <Button size="small" type="link">
+            
             <Link to={`/user/update-gadget/${record._id}`}>
               <EditOutlined />
             </Link>
           </Button>
-          <Button size="small" type="dashed">
+          <Button size="small" type="link">
             <Link to={`/user/duplicate-gadget/${record._id}`}>
               <CopyOutlined />
             </Link>
           </Button>
           <Button
             size="small"
-            type="dashed"
+            type="link"
             onClick={() => {
               handleDelete(record._id);
             }}
           >
             <DeleteOutlined />
           </Button>
-        </Space>
+          {/* </Space> */}
+          <Space className="pt-3">
+            <Button
+              size="small"
+              type="primary"
+              onClick={() => {
+                handleAddCart(record);
+              }}
+            >
+              Add to Cart
+            </Button>
+          </Space>
+        </div>
       ),
     },
   ];
@@ -121,6 +139,19 @@ const AllGadgets = () => {
   const handleDelete = async (id: string) => {
     await DeleteProduct(id);
   };
+
+  const handleAddCart = async (record: any) => {
+    dispatch(setCart({cart: record}))
+    console.log(record)
+  };
+
+
+
+
+
+
+
+
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
@@ -197,7 +228,7 @@ const AllGadgets = () => {
       <h1 className="text-center">All Electronics Gadgets</h1>
       <hr />
       <div style={{ display: "flex" }}>
-        <div className="shadow rounded mt-2 mb-2" style={{ width: "300px" }}>
+        <div className="border rounded mt-2 mb-2" style={{ width: "300px" }}>
           <h3 className="text-center">Filtered Your Data</h3>
           <hr />
           <form className="p-2" style={{ marginBottom: 10, marginTop: 10 }}>
@@ -290,12 +321,20 @@ const AllGadgets = () => {
             </select>
           </form>
         </div>
-        <div className="shadow rounded m-2">
-          <div className="m-5" style={{ marginBottom: 10, marginTop: 10 }}>
+        <div className="border rounded m-2">
+          <div className="m-5" style={{ marginBottom: 10, marginTop: 10, display: 'flex', justifyContent: 'space-between' }}>
             <Button type="primary" onClick={handleBulkDelete}>
               Delete
             </Button>
-            <span style={{ marginLeft: 8 }}></span>
+              <div className="p-2">
+                <a href="#">
+                  <Badge count={5}>
+                    <ShoppingCartOutlined
+                      style={{ fontSize: "26px", color: "#0063cc" }}
+                    />
+                  </Badge>
+                </a>
+              </div>
           </div>
           <Table
             className="m-5"

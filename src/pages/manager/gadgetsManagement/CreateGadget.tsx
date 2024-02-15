@@ -2,19 +2,20 @@
 import { Button, Col, Form, Input, Row } from "antd";
 import { Controller, FieldValues } from "react-hook-form";
 import { toast } from "sonner";
-import CreateInput from "../../components/createGadgetForm/CreateInput";
-import { useCreateGadgetMutation } from "../../redux/features/product/productApi";
-import SelectInput from "../../components/createGadgetForm/SelectInput";
-import CreateForm from "../../components/createGadgetForm/CreateForm";
+import CreateInput from "../../../components/createGadgetForm/CreateInput";
+import { useCreateGadgetMutation } from "../../../redux/features/product/productApi";
+import SelectInput from "../../../components/createGadgetForm/SelectInput";
+import CreateForm from "../../../components/createGadgetForm/CreateForm";
+import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
+import { useAppSelector } from "../../../redux/hooks";
 
 const CreateGadget = () => {
   const [CreateGadget] = useCreateGadgetMutation();
+  const User = useAppSelector(selectCurrentUser);
 
   const onSubmit = async (data: FieldValues) => {
     // console.log(data)
     const toastId = toast.loading("Creating Gadget!");
-
-
 
     try {
       const createInfo = {
@@ -30,14 +31,13 @@ const CreateGadget = () => {
         features: data.features,
         release_date: new Date(),
         image: data.image,
+        user: User?.userId,
       };
 
-    const formData = new FormData();
+      const formData = new FormData();
 
-
-      formData.append('data', JSON.stringify(createInfo));
-      formData.append('file', data.image);
-  
+      formData.append("data", JSON.stringify(createInfo));
+      formData.append("file", data.image);
 
       const res = await CreateGadget(formData).unwrap();
       if (res.success) {
@@ -63,7 +63,12 @@ const CreateGadget = () => {
       <hr />
       <CreateForm onSubmit={onSubmit}>
         <Row>
-          <Col className="colInput" span={24} md={{span:12}} lg={{span:8}}>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
             <CreateInput
               type="text"
               name="product_name"
@@ -72,21 +77,26 @@ const CreateGadget = () => {
             />
           </Col>
           <Col className="colFile" span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <Controller
-                name="image"
-                render={({ field: { onChange, value, ...field } }) => (
-                  <Form.Item label="Picture">
-                    <Input
-                      type="file"
-                      value={value?.fileName}
-                      {...field}
-                      onChange={(e) => onChange(e.target.files?.[0])}
-                    />
-                  </Form.Item>
-                )}
-              />
-            </Col>
-          <Col className="colInput" span={24} md={{span:12}} lg={{span:8}}>
+            <Controller
+              name="image"
+              render={({ field: { onChange, value, ...field } }) => (
+                <Form.Item label="Picture">
+                  <Input
+                    type="file"
+                    value={value?.fileName}
+                    {...field}
+                    onChange={(e) => onChange(e.target.files?.[0])}
+                  />
+                </Form.Item>
+              )}
+            />
+          </Col>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
             <CreateInput
               type="number"
               name="price"
@@ -94,7 +104,12 @@ const CreateGadget = () => {
               placeholder="Price"
             />
           </Col>
-          <Col className="colInput" span={24} md={{span:12}} lg={{span:8}}>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
             <CreateInput
               type="number"
               name="quantity"
@@ -102,7 +117,12 @@ const CreateGadget = () => {
               placeholder="Quantity"
             />
           </Col>
-          <Col className="colInput" span={24} md={{span:12}} lg={{span:8}}>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
             <CreateInput
               type="text"
               name="features"
@@ -110,7 +130,12 @@ const CreateGadget = () => {
               placeholder="Features"
             />
           </Col>
-          <Col className="colInput" span={24} md={{span:12}} lg={{span:8}}>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
             <CreateInput
               type="text"
               name="model_number"
@@ -118,7 +143,12 @@ const CreateGadget = () => {
               placeholder="Model Number"
             />
           </Col>
-          <Col className="colInput" span={24} md={{span:12}} lg={{span:8}}>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
             <SelectInput
               type="select"
               name="brand"
@@ -133,7 +163,12 @@ const CreateGadget = () => {
             />
           </Col>
 
-          <Col className="colInput"span={24} md={{span:12}} lg={{span:8}}>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
             <SelectInput
               type="select"
               name="category"
@@ -147,7 +182,12 @@ const CreateGadget = () => {
               ]}
             />
           </Col>
-          <Col className="colInput" span={24} md={{span:12}} lg={{span:8}}>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
             <SelectInput
               type="select"
               name="operating_system"
@@ -159,7 +199,12 @@ const CreateGadget = () => {
               ]}
             />
           </Col>
-          <Col className="colInput" span={24} md={{span:12}} lg={{span:8}}>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
             <SelectInput
               type="select"
               name="connectivity"
@@ -171,7 +216,12 @@ const CreateGadget = () => {
               ]}
             />
           </Col>
-          <Col className="colInput" span={24} md={{span:12}} lg={{span:8}}>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
             <SelectInput
               type="select"
               name="power_source"

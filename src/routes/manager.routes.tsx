@@ -1,16 +1,16 @@
 import CreateGadget from "../pages/manager/gadgetsManagement/CreateGadget";
+import AllGadgets from "../pages/manager/gadgetsManagement/AllGadgets";
 import UpdateGadget from "../pages/manager/gadgetsManagement/UpdateGadget";
 import SaleGadgets from "../pages/manager/salesManagement/SaleGadgets";
 import SalesHistory from "../pages/manager/salesManagement/SalesHistory";
 import CreateVariant from "../pages/manager/gadgetsManagement/CreateVariant";
-import UserDashboard from "../pages/UserDashboard";
-import MyAllGadgets from "../pages/user/userGadgetManagement/MyAllGadgets";
+import ManagerDashboard from "../pages/ManagerDashboard";
 
-export const userPaths = [
+export const managerPaths = [
   {
-    name: "User Dashboard",
+    name: "Manager Dashboard",
     path: "dashboard",
-    element: <UserDashboard />,
+    element: <ManagerDashboard/>,
   },
   {
     name: "Gadgets Management",
@@ -21,9 +21,9 @@ export const userPaths = [
         element: <CreateGadget />,
       },
       {
-        name: "My All Gadgets",
+        name: "All Gadgets",
         path: "all-gadget",
-        element: <MyAllGadgets />,
+        element: <AllGadgets />,
       },
       {
         hidden: true,

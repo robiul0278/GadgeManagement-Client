@@ -180,6 +180,10 @@ h2 {
   /* margin-left: 4px; */
 }
 
+.border{
+  border: 1px solid gray;
+}
+
 .text-center {
   margin-top: 10px;
   text-align: center;
@@ -246,3 +250,4 @@ td, th {
   border-radius: 4px;
   box-sizing: border-box;
 }
+

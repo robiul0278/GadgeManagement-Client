@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Skeleton, Table } from "antd";
-import { useAllSalesQuery } from "../../redux/features/sales/salesApi";
+import { useAllSalesQuery } from "../../../redux/features/sales/salesApi";
 import { SerializedError } from "@reduxjs/toolkit";
 import type { TableColumnsType } from "antd";
-import { TSales } from "../../types/types";
+import { TSales } from "../../../types/types";
 
 const SalesHistory = () => {
   const { data: allHistory, isLoading, error } = useAllSalesQuery({});

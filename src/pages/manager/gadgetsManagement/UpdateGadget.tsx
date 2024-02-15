@@ -3,47 +3,49 @@ import { Button, Col, Row, Skeleton } from "antd";
 import { FieldValues, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
-  useCreateGadgetMutation,
   useSingleProductQuery,
-} from "../../redux/features/product/productApi";
+  useUpdateGadgetMutation,
+} from "../../../redux/features/product/productApi";
 import { useParams } from "react-router-dom";
 
-const CreateVariant = () => {
+const UpdateGadget = () => {
   const { register, handleSubmit } = useForm();
 
   const { gadgetId } = useParams();
   const { data: { data: product } = {}, isLoading } =
     useSingleProductQuery(gadgetId);
-  const [DuplicateVariant] = useCreateGadgetMutation();
-  console.log("Main data", product);
+  const [UpdateGadget] = useUpdateGadgetMutation();
+  // console.log(product)
 
   if (isLoading) {
     return <Skeleton active />;
   }
   const onSubmit = async (data: FieldValues) => {
-    const toastId = toast.loading("Creating variant!");
+    const toastId = toast.loading("Updating user!");
 
     try {
       const updateInfo = {
-        name: data.name,
-        price: parseFloat(data.price),
-        quantity: parseFloat(data.quantity),
-        brand: data.brand,
-        model_number: data.model_number,
-        category: data.category,
-        operating_system: data.operating_system,
-        connectivity: data.connectivity,
-        power_source: data.power_source,
-        features: data.features,
-        release_date: new Date(),
+        name: data.name || product.name,
+        price: parseFloat(data.price) || parseFloat(product.price),
+        quantity: parseFloat(data.quantity) || parseFloat(product.quantity),
+        brand: data.brand || product.brand,
+        model_number: data.model_number || product.model_number,
+        category: data.category || product.category,
+        operating_system: data.operating_system || product.operating_system,
+        connectivity: data.connectivity || product.connectivity,
+        power_source: data.power_source || product.power_source,
+        features: data.features || product.features,
       };
 
       console.log(updateInfo);
 
-      const res = await DuplicateVariant(updateInfo).unwrap();
+      const res = await UpdateGadget({
+        data: updateInfo,
+        id: gadgetId,
+      }).unwrap();
       console.log(res.data);
       if (res.success) {
-        toast.success("Variant create successful!", {
+        toast.success("Gadget Update successful!", {
           id: toastId,
           duration: 2000,
         });
@@ -61,9 +63,7 @@ const CreateVariant = () => {
       className="shadow rounded p-5 w-7xl"
       style={{ border: "1px solid gray" }}
     >
-      <h1 className="text-center">
-        Create Duplicate Variant Electronics Gadget
-      </h1>
+      <h1 className="text-center">Update Electronics Gadget</h1>
       <hr />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Row>
@@ -160,8 +160,8 @@ const CreateVariant = () => {
               {...register("operating_system", { required: true })}
             >
               <option value="windows">Windows</option>
-              <option value="Android">Android</option>
-              <option value="ios">IOS</option>
+              <option value="android">Android</option>
+              <option value="iOS">ios</option>
             </select>
           </Col>
           <Col className="colInput" span={8}>
@@ -178,7 +178,7 @@ const CreateVariant = () => {
             </select>
           </Col>
           <Col className="colInput" span={8}>
-            <label htmlFor="battery-powered">Power Source</label> <br />
+            <label htmlFor="power_source">Power Source</label> <br />
             <select
               className="gInput"
               id="power_source"
@@ -190,10 +190,10 @@ const CreateVariant = () => {
             </select>
           </Col>
         </Row>
-        <Button htmlType="submit">Create Variant</Button>
+        <Button htmlType="submit">Update</Button>
       </form>
     </div>
   );
 };
 
-export default CreateVariant;
+export default UpdateGadget;

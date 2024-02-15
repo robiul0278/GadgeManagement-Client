@@ -1,18 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Table, Modal, Row, Skeleton } from "antd";
-import {
-  useAllGadgetQuery,
-  useSingleProductQuery,
-  useUpdateGadgetMutation,
-} from "../../redux/features/product/productApi";
+import { Button, Table, Modal, Row, Skeleton, Badge } from "antd";
+import { useAllGadgetQuery } from "../../../redux/features/product/productApi";
 import { SerializedError } from "@reduxjs/toolkit";
-import { toast } from "sonner";
 import React, { useState } from "react";
 import type { TableColumnsType } from "antd";
-import { TGadget } from "../../types/types";
-import { FieldValues, useForm } from "react-hook-form";
+import { TGadget } from "../../../types/types";
+import { useForm } from "react-hook-form";
 import { Col } from "antd";
-import { useCreateSalesMutation } from "../../redux/features/sales/salesApi";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { selectCart, setCart } from "../../../redux/features/product/productSlice";
+import { ShoppingCartOutlined } from "@ant-design/icons";
 
 interface DataType {
   key: React.Key;
@@ -22,15 +19,12 @@ interface DataType {
 }
 
 const SaleGadgets = () => {
-  const { register, handleSubmit, reset } = useForm();
+  const { register } = useForm();
   const { data: allGadgets, isLoading, error } = useAllGadgetQuery({});
-  const [UpdateQuantity] = useUpdateGadgetMutation();
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [CreateSales] = useCreateSalesMutation();
-  const [gadgetId, setSaleProductId] = useState();
-  const { data: { data: quantityProduct } = {} } =
-    useSingleProductQuery(gadgetId);
-  console.log(quantityProduct);
+  const cart = useAppSelector(selectCart)
+  // console.log(cart.length)
+  const dispatch = useAppDispatch();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -51,6 +45,18 @@ const SaleGadgets = () => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+
+  const [cartItems, setCartItems] = useState<any[]>([]);
+  const handleAddCart = async (record: any) => {
+    // Check if the product ID is already in the cart
+    const isProductIdInCart = cartItems.some((item) => item._id === record._id);
+
+    if (!isProductIdInCart) {
+      // If not in the cart, add it
+      dispatch(setCart({ cart: record }));
+      setCartItems([...cartItems, record]);
+    }
   };
 
   const columns: TableColumnsType<DataType> = [
@@ -103,12 +109,12 @@ const SaleGadgets = () => {
         <Button
           size="small"
           type="primary"
-          onClick={() => {
-            setIsModalOpen(true);
-            setSaleProductId(record._id);
-          }}
+          onClick={() => handleAddCart(record)}
+          disabled={cartItems.some((item) => item._id === record._id)}
         >
-          Sale
+          {cartItems.some((item) => item._id === record._id)
+            ? "Added to Cart"
+            : "Add to Cart"}
         </Button>
       ),
     },
@@ -124,46 +130,6 @@ const SaleGadgets = () => {
     return <p>Error fetching gadgets: {errorMessage}</p>;
   }
 
-  // Modal data =====================================
-
-  const onSubmit = async (data: FieldValues) => {
-    console.log("data", data);
-    const toastId = toast.loading("sale gadgets!");
-
-    try {
-      const saleInfo = {
-        name: data.buyer_name,
-        // calculate quantity
-        quantity: parseFloat(data.quantity),
-        date: new Date(),
-      };
-
-      if (quantityProduct.quantity < saleInfo.quantity) {
-        toast.error("Requested quantity exceeds available stock!", {
-          id: toastId,
-          duration: 2000,
-        });
-        return; // Stop further execution
-      }
-
-      // Update the quantity of the product
-      const updatedQuantity = quantityProduct.quantity - saleInfo.quantity;
-      const updateInfo = { ...quantityProduct, quantity: updatedQuantity };
-      await UpdateQuantity({ id: gadgetId, data: updateInfo });
-
-      const response = await CreateSales(saleInfo).unwrap();
-      console.log(response);
-      toast.success("Sales successful!", { id: toastId, duration: 2000 });
-      reset();
-      // Optionally, you can handle further actions after successful registration
-    } catch (error: any) {
-      console.log();
-      toast.error(`Something went wrong! ${error?.data?.message} !`, {
-        id: toastId,
-        duration: 2000,
-      });
-    }
-  };
   return (
     <>
       <>
@@ -175,7 +141,7 @@ const SaleGadgets = () => {
           onCancel={handleCancel}
         >
           <hr />
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form>
             <Row style={{}}>
               <Col className="colInput" span={8}>
                 <label htmlFor="name">Buyer Name:</label> <br />
@@ -216,17 +182,26 @@ const SaleGadgets = () => {
       </>
       <h1 className="text-center">Sales Electronics Gadget</h1>
       <hr />
-      <div style={{ marginBottom: 10, marginTop: 10 }}>
+      <div className="" style={{ marginBottom: 10, marginTop: 10, display: 'flex', justifyContent: 'space-between' }}>
         {/* <label htmlFor="name">Buyer Name:</label> <br /> */}
         <input
           className="rounded"
-          style={{ padding: "10px", width: "26%", border: "none" }}
+          style={{ padding: "5px", width: "20%", border: '1px solid gray' }}
           type="search"
           id="name"
-          placeholder="Search Gadgets"
+          placeholder="Search gadgets"
           value={searchQuery}
           onChange={handleSearch}
         />
+        <div className="p-2 mr-2">
+          <a href="#">
+            <Badge count={cart.length}>
+              <ShoppingCartOutlined
+                style={{ fontSize: "26px", color: "#0063cc" }}
+              />
+            </Badge>
+          </a>
+        </div>
       </div>
       <Table columns={columns} dataSource={filteredData} />
     </>
