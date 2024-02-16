@@ -5,6 +5,7 @@ import SalesHistory from "../pages/manager/salesManagement/SalesHistory";
 import CreateVariant from "../pages/manager/gadgetsManagement/CreateVariant";
 import UserDashboard from "../pages/UserDashboard";
 import MyAllGadgets from "../pages/user/userGadgetManagement/MyAllGadgets";
+import CheckOut from "../pages/manager/salesManagement/Checkout";
 
 export const userPaths = [
   {
@@ -51,6 +52,12 @@ export const userPaths = [
         name: "Sales History",
         path: "sale-history",
         element: <SalesHistory />,
+      },
+      {
+        hidden: true,
+        name: "Checkout gadget",
+        path: "checkout",
+        element: <CheckOut />,
       },
     ],
   },

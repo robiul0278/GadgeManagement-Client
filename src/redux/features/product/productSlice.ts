@@ -2,36 +2,46 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import { TGadget } from "../../../types/types";
 
-// export type TUser = {
+// interface ProductState {
+//   key: string;
+//   _id: string;
+//   name: string;
+//   price: number;
+//   quantity: number;
+//   brand: string;
+//   model_number: string;
+//   category: string;
+//   operating_system: string;
+//   connectivity: string;
+//   power_source: string;
+//   features: string;
+//   isDeleted?: boolean;
+//   release_date: string;
+// }
 
+// const initialState = {
+//   cart: [],
 // };
 
-type TProductState = {
-  cart: TGadget[];
-};
-
-const initialState: TProductState = {
-  cart: [],
-};
-
 const productSlice = createSlice({
-  name: "product",
-  initialState,
+  name: "cart",
+  initialState: [],
   reducers: {
     setCart: (state, action) => {
-      state.cart.push(action.payload);
+      state.push(action.payload);
     },
-    removeFromCart: (state, action) => {
-      state.cart = state.cart.filter((item) => item._id !== action.payload._id);
-    },
-    clearCart: (state) => {
-      state.cart = [];
-    },
+    // removeFromCart: (state, action) => {
+    //   state.cart = state.cart.filter((item) => item._id !== action.payload._id);
+    // },
+    // clearCart: (state) => {
+    //   state.cart = [];
+    // },
   },
 });
 
-export const { setCart , removeFromCart, clearCart} = productSlice.actions;
+export const { setCart /* removeFromCart, clearCart  */ } =
+  productSlice.actions;
 
 export default productSlice.reducer;
 
-export const selectCart = (state: RootState) => state.product.cart;
+export const selectCart = (state: RootState) => state.cart;

@@ -1,7 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit';
-import authReducer from './features/auth/authSlice';
-import productReducer from './features/product/productSlice';
-import { baseApi } from './api/baseApi';
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import authReducer from "./features/auth/authSlice";
+import productReducer from "./features/product/productSlice";
+import { baseApi } from "./api/baseApi";
 import {
   persistReducer,
   persistStore,
@@ -11,23 +11,28 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
-  key: 'auth product',
+  key: "auth cart",
   storage,
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
-const persistedProductReducer = persistReducer(persistConfig, productReducer);
+// const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+// const persistedProductReducer = persistReducer(persistConfig, productReducer);
+
+const persistedRootReducer = persistReducer(
+  persistConfig,
+  combineReducers({
+    [baseApi.reducerPath]: baseApi.reducer,
+    auth: authReducer,
+    cart: productReducer,
+  })
+);
 
 export const store = configureStore({
-  reducer: {
-    [baseApi.reducerPath]: baseApi.reducer,
-    auth: persistedAuthReducer,
-    product: persistedProductReducer,
-  },
+  reducer: persistedRootReducer,
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({
       serializableCheck: {
@@ -42,3 +47,17 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export const persistor = persistStore(store);
+
+/* 
+const persistedRootReducer = persistReducer(persistConfig, combineReducers({
+  [baseApi.reducerPath]: baseApi.reducer,
+  auth: authReducer,
+  product: productReducer,
+}));
+
+export const store = configureStore({
+  reducer: persistedRootReducer,
+  // ...other configurations
+});
+
+*/

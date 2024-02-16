@@ -43,7 +43,7 @@ import {
   
       if (data?.data?.accessToken) {
         const user = (api.getState() as RootState).auth.user;
-        const cart = (api.getState() as RootState).product.cart;
+        const cart = (api.getState() as RootState).cart;
   
         api.dispatch(
           setUser({
