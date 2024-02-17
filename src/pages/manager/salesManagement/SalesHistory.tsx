@@ -15,6 +15,22 @@ const SalesHistory = () => {
       dataIndex: "name",
     },
     {
+      title: "Contact Number",
+      dataIndex: "contact_number",
+    },
+    {
+      title: "Email Address",
+      dataIndex: "email",
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+    },
+    {
+      title: "Postal Code",
+      dataIndex: "postal_code",
+    },
+    {
       title: "Products Quantity",
       dataIndex: "quantity",
     },

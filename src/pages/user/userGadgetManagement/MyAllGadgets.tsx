@@ -140,7 +140,6 @@ const MyAllGadgets = () => {
     );
   });
 
-  console.log(filteredData);
 
   const allData = filteredData?.reduce((acc: TGadget[], item: TGadget) => {
     if (!item.isDeleted && item.quantity > 0) {
@@ -174,10 +173,8 @@ const MyAllGadgets = () => {
     return <p>Error fetching gadgets: {errorMessage}</p>;
   }
 
-  // console.log(allGadgets);
 
   const onSelectChange = (newSelectedRowKeys: any) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -188,8 +185,9 @@ const MyAllGadgets = () => {
   };
 
   const handleBulkDelete = async () => {
-    const res = await BulkDelete({ ids: selectedRowKeys });
-    console.log(res);
+    const res=  await BulkDelete({ ids: selectedRowKeys });
+    console.log(res)
+
   };
 
   return (

@@ -12,17 +12,16 @@ const Register = () => {
   const navigate = useNavigate()
 
   const onSubmit = async (data: FieldValues) => {
-    console.log(data)
     const toastId = toast.loading("Registering user!");
 
     try {
-      const response = await registerUser(data).unwrap();
-      console.log(response);
-      toast.success("Register successful!", { id: toastId, duration: 2000 });
+      const res = await registerUser(data).unwrap();
+      if (res.success) {
+        toast.success("Register successful!", { id: toastId, duration: 2000 });
+      }
       navigate('/login')
       // Optionally, you can handle further actions after successful registration
     } catch (error: any) {
-      console.log()
       toast.error(`Something went wrong! ${error?.data?.message} !`, { id: toastId, duration: 2000 });
      
     }

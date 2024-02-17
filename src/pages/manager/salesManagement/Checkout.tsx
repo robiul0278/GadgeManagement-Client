@@ -5,18 +5,24 @@ import { selectCart } from "../../../redux/features/product/productSlice";
 import { TGadget } from "../../../types/types";
 import { toast } from "sonner";
 import { useCreateSalesMutation } from "../../../redux/features/sales/salesApi";
-import { FieldValues, useForm } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 // import { useUpdateGadgetMutation } from "../../../redux/features/product/productApi";
 import { useEffect, useState } from "react";
-// import { useSingleProductQuery, useUpdateGadgetMutation } from "../../../redux/features/product/productApi";
+import CreateForm from "../../../components/createGadgetForm/CreateForm";
+import CreateInput from "../../../components/createGadgetForm/CreateInput";
+import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
 
 const CheckOut = () => {
   const cart = useAppSelector(selectCart);
+  const User = useAppSelector(selectCurrentUser);
   const [CreateSales] = useCreateSalesMutation();
   // const [UpdateQuantity] = useUpdateGadgetMutation();
-  const { register, handleSubmit, reset } = useForm();
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+
+  const numbers = Object.values(quantities);
+  const quantity = numbers.reduce((total, num) => total + num, 0);
+
 
   // Calculate initial total amount based on default quantities and item prices
   useEffect(() => {
@@ -37,17 +43,9 @@ const CheckOut = () => {
       ...prevQuantities,
       [productId]: newQuantity,
     }));
-
-    // Calculate the total amount based on individual item prices and quantities
-    const updatedTotalAmount = cart.reduce((total, item: TGadget) => {
-      const itemQuantity = quantities[item._id] || 0;
-      return total + item.price * itemQuantity;
-    }, 0);
-    setTotalAmount(updatedTotalAmount);
   };
 
-
-// React hook form 
+  // React hook form
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Sale gadgets!");
 
@@ -55,18 +53,20 @@ const CheckOut = () => {
       const saleInfo = {
         name: data.buyer_name,
         contact_number: Number(data.contact_number),
+        email: data.email,
         date: new Date(),
-        total_price: totalAmount,
+        address: data.address,
+        postal_code: Number(data.postal_code),
+        total_amounts: totalAmount,
+        quantity: quantity,
+        user: User?.userId,
       };
-      console.log(saleInfo);
 
-      const response = await CreateSales(saleInfo).unwrap();
-
-      console.log(response);
-      toast.success("Sales successful!", { id: toastId, duration: 2000 });
-      reset();
+      const res = await CreateSales(saleInfo).unwrap();
+      if (res.success) {
+        toast.success("Sales successful!", { id: toastId, duration: 2000 });
+      }
     } catch (error: any) {
-      console.log();
       toast.error(`Something went wrong! ${error?.data?.message} !`, {
         id: toastId,
         duration: 2000,
@@ -77,59 +77,95 @@ const CheckOut = () => {
   return (
     <Row className="" style={{}}>
       <Col span={16}>
-        <div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Row style={{}}>
-              <Col className="colInput" span={8}>
-                <label htmlFor="name">Buyer Name:</label> <br />
-                <input
-                  style={{
-                    padding: "8px",
-                    border: "2px solid gray",
-                    borderRadius: "5px",
-                  }}
+        <div className="rounded p-5" style={{}}>
+          <h1 className="text-center">Sale Electronics Gadget</h1>
+          <hr />
+          <CreateForm onSubmit={onSubmit}>
+            <Row>
+              <Col
+                className="colInput"
+                span={24}
+                md={{ span: 12 }}
+                lg={{ span: 8 }}
+              >
+                <CreateInput
                   type="text"
-                  id="name"
-                  placeholder="Buyer name"
-                  {...register("buyer_name", { required: true })}
+                  name="buyer_name"
+                  label="Buyer Name"
+                  placeholder="Buyer Name"
                 />
               </Col>
-              <Col className="colInput" span={8}>
-                <label htmlFor="name">Contact Number:</label> <br />
-                <input
-                  style={{
-                    padding: "8px",
-                    border: "2px solid gray",
-                    borderRadius: "5px",
-                  }}
+
+              <Col
+                className="colInput"
+                span={24}
+                md={{ span: 12 }}
+                lg={{ span: 8 }}
+              >
+                <CreateInput
                   type="number"
-                  id="name"
-                  placeholder="number"
-                  {...register("contact_number", { required: true })}
+                  name="contact_number"
+                  label="Contact Number"
+                  placeholder="Contact Number"
                 />
               </Col>
-              <Col className="colInput" span={8}>
-                <label htmlFor="date">Sale Date:</label>
-                <br />
-                <input
-                  style={{
-                    padding: "8px",
-                    border: "2px solid gray",
-                    borderRadius: "5px",
-                  }}
-                  type="date"
-                  id="date"
-                  {...register("sale_date", { required: true })}
+              <Col
+                className="colInput"
+                span={24}
+                md={{ span: 12 }}
+                lg={{ span: 8 }}
+              >
+                <CreateInput
+                  type="text"
+                  name="email"
+                  label="Buyer Email"
+                  placeholder="Email"
+                />
+              </Col>
+              <Col
+                className="colInput"
+                span={24}
+                md={{ span: 12 }}
+                lg={{ span: 8 }}
+              >
+                <CreateInput type="date" name="sale_date" label="Sale Date" />
+              </Col>
+              <Col
+                className="colInput"
+                span={24}
+                md={{ span: 12 }}
+                lg={{ span: 8 }}
+              >
+                <CreateInput
+                  type="text"
+                  name="address"
+                  label="Address"
+                  placeholder="Address"
+                />
+              </Col>
+              <Col
+                className="colInput"
+                span={24}
+                md={{ span: 12 }}
+                lg={{ span: 8 }}
+              >
+                <CreateInput
+                  type="text"
+                  name="postal_code"
+                  label="Postal Code"
+                  placeholder="Postal Code"
                 />
               </Col>
             </Row>
-            <Button className="mt-5" htmlType="submit">
-              Sale Product
-            </Button>
-          </form>
+            <Button htmlType="submit">Sale Gadget</Button>
+          </CreateForm>
         </div>
       </Col>
-      <Col span={8}>
+      <Col
+        className="shadow rounded p-5"
+        style={{ border: "1px solid gray" }}
+        span={8}
+      >
         {cart.map((item: TGadget) => (
           <div
             key={item._id}
@@ -137,12 +173,18 @@ const CheckOut = () => {
             style={{
               display: "flex",
               justifyContent: "space-between",
+              // alignContent: "center",
+              alignItems: "center",
               border: "1px solid gray",
               borderRadius: "5px",
             }}
           >
             <Col span={10}>
-              <img style={{ width: 100 }} alt="gadget image" src={item.image} />
+              <img
+                style={{ width: 100, borderRadius: "5px" }}
+                alt="gadget image"
+                src={item.image}
+              />
             </Col>
             <Col span={10}>
               <h4>Name: {item.name}</h4>
@@ -167,7 +209,7 @@ const CheckOut = () => {
             </Col>
           </div>
         ))}
-        <h3>Total Amount: {totalAmount} BDT</h3>
+        <h3>Total Amount = {totalAmount} BDT</h3>
       </Col>
     </Row>
   );

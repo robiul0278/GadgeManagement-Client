@@ -14,7 +14,6 @@ const CreateGadget = () => {
   const User = useAppSelector(selectCurrentUser);
 
   const onSubmit = async (data: FieldValues) => {
-    // console.log(data)
     const toastId = toast.loading("Creating Gadget!");
 
     try {

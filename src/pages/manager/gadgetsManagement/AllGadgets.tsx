@@ -142,7 +142,6 @@ const AllGadgets = () => {
 
   const handleAddCart = async (record: any) => {
     dispatch(setCart({cart: record}))
-    console.log(record)
   };
 
 
@@ -171,7 +170,6 @@ const AllGadgets = () => {
     );
   });
 
-  console.log(filteredData);
 
   const allData = filteredData?.reduce((acc: TGadget[], item: TGadget) => {
     if (!item.isDeleted && item.quantity > 0) {
@@ -205,10 +203,8 @@ const AllGadgets = () => {
     return <p>Error fetching gadgets: {errorMessage}</p>;
   }
 
-  // console.log(allGadgets);
 
   const onSelectChange = (newSelectedRowKeys: any) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -220,7 +216,7 @@ const AllGadgets = () => {
 
   const handleBulkDelete = async () => {
     const res = await BulkDelete({ ids: selectedRowKeys });
-    console.log(res);
+    console.log(res)
   };
 
   return (

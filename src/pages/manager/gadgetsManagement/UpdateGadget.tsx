@@ -1,49 +1,71 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Col, Row, Skeleton } from "antd";
-import { FieldValues, useForm } from "react-hook-form";
+import { Button, Col, Form, Input, Row, Skeleton } from "antd";
+import { Controller, FieldValues} from "react-hook-form";
 import { toast } from "sonner";
 import {
   useSingleProductQuery,
   useUpdateGadgetMutation,
 } from "../../../redux/features/product/productApi";
 import { useParams } from "react-router-dom";
+import CreateForm from "../../../components/createGadgetForm/CreateForm";
+import CreateInput from "../../../components/createGadgetForm/CreateInput";
+import SelectInput from "../../../components/createGadgetForm/SelectInput";
 
 const UpdateGadget = () => {
-  const { register, handleSubmit } = useForm();
 
   const { gadgetId } = useParams();
   const { data: { data: product } = {}, isLoading } =
     useSingleProductQuery(gadgetId);
   const [UpdateGadget] = useUpdateGadgetMutation();
-  // console.log(product)
 
   if (isLoading) {
     return <Skeleton active />;
   }
+
+
+  const defaultValues = {
+    product_name: product?.name,
+    price: product?.price,
+    quantity: product?.quantity,
+    brand: product?.brand,
+    model_number: product?.model_number,
+    category: product?.category,
+    operating_system: product?.operating_system,
+    connectivity: product?.connectivity,
+    power_source: product?.power_source,
+    features: product?.features,
+    // image: product?.image,
+  };
+
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Updating user!");
 
     try {
       const updateInfo = {
-        name: data.name || product.name,
-        price: parseFloat(data.price) || parseFloat(product.price),
-        quantity: parseFloat(data.quantity) || parseFloat(product.quantity),
-        brand: data.brand || product.brand,
-        model_number: data.model_number || product.model_number,
-        category: data.category || product.category,
-        operating_system: data.operating_system || product.operating_system,
-        connectivity: data.connectivity || product.connectivity,
-        power_source: data.power_source || product.power_source,
-        features: data.features || product.features,
+        name: data.product_name,
+        price: parseFloat(data.price),
+        quantity: parseFloat(data.quantity),
+        brand: data.brand,
+        model_number: data.model_number,
+        category: data.category,
+        operating_system: data.operating_system,
+        connectivity: data.connectivity,
+        power_source: data.power_source,
+        features: data.features,
+        release_date: new Date(),
+        image: data.image,
       };
 
-      console.log(updateInfo);
+      // const formData = new FormData();
+
+      // formData.append("data", JSON.stringify(updateInfo));
+      // formData.append("file", data.image);
 
       const res = await UpdateGadget({
         data: updateInfo,
         id: gadgetId,
       }).unwrap();
-      console.log(res.data);
+      
       if (res.success) {
         toast.success("Gadget Update successful!", {
           id: toastId,
@@ -51,7 +73,7 @@ const UpdateGadget = () => {
         });
       }
     } catch (error: any) {
-      console.log();
+      
       toast.error(`Something went wrong! ${error?.data?.message} !`, {
         id: toastId,
         duration: 2000,
@@ -65,133 +87,182 @@ const UpdateGadget = () => {
     >
       <h1 className="text-center">Update Electronics Gadget</h1>
       <hr />
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <CreateForm onSubmit={onSubmit} defaultValues={defaultValues}>
         <Row>
-          <Col className="colInput" span={8}>
-            <label htmlFor="name">Product Name</label> <br />
-            <input
-              className="gInput"
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
+            <CreateInput
+            // defaultValue={product?.name}
               type="text"
-              id="name"
-              defaultValue={product?.name}
-              {...register("name", { required: true })}
+              name="product_name"
+              label="Product Name"
+              placeholder="Product Name"
             />
           </Col>
-          <Col className="colInput" span={8}>
-            <label htmlFor="price">Price</label> <br />
-            <input
-              style={{ padding: "10px", marginTop: "8px", width: "335px" }}
+          <Col className="colFile" span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+            <Controller
+              name="image"
+              render={({ field: { onChange, value, ...field } }) => (
+                <Form.Item label="Picture">
+                  <Input
+                  // required
+                    type="file"
+                    value={value?.fileName}
+                    {...field}
+                    onChange={(e) => onChange(e.target.files?.[0])}
+                  />
+                </Form.Item>
+              )}
+            />
+          </Col>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
+            <CreateInput
               type="number"
-              id="price"
-              defaultValue={product?.price}
-              {...register("price", { required: true })}
+              name="price"
+              label="Price"
+              placeholder="Price"
             />
           </Col>
-          <Col className="colInput" span={8}>
-            <label htmlFor="quantity">Quantity</label>
-            <br />
-            <input
-              style={{ padding: "10px", marginTop: "8px", width: "335px" }}
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
+            <CreateInput
               type="number"
-              id="quantity"
-              defaultValue={product?.quantity}
-              {...register("quantity", { required: true })}
+              name="quantity"
+              label="Quantity"
+              placeholder="Quantity"
             />
           </Col>
-          <Col className="colInput" span={8}>
-            <label htmlFor="product_name">Features</label>
-            <br />
-            <input
-              className="gInput"
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
+            <CreateInput
               type="text"
-              id="product_name"
-              defaultValue={product?.features}
-              {...register("features", { required: true })}
+              name="features"
+              label="Features"
+              placeholder="Features"
             />
           </Col>
-          <Col className="colInput" span={8}>
-            <label htmlFor="model_number">Model Number</label> <br />
-            <input
-              className="gInput"
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
+            <CreateInput
               type="text"
-              id="model_number"
-              defaultValue={product?.model_number}
-              {...register("model_number", { required: true })}
+              name="model_number"
+              label="Model Number"
+              placeholder="Model Number"
             />
           </Col>
-          <Col className="colInput" span={8}>
-            <label htmlFor="brand">Select Brand</label>
-            <br />
-            <select
-              className="gInput"
-              id="brand"
-              defaultValue={product?.brand}
-              {...register("brand", { required: true })}
-            >
-              <option value="apple">Apple</option>
-              <option value="sony">Sony</option>
-              <option value="samsung">Samsung</option>
-              <option value="logitech">Logitech</option>
-              <option value="hyperX">HyperX</option>
-            </select>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
+            <SelectInput
+              type="select"
+              name="brand"
+              label="Select Brand"
+              options={[
+                { label: "Apple", value: "apple" },
+                { label: "Sony", value: "sony" },
+                { label: "Samsung", value: "samsung" },
+                { label: "Logitech", value: "logitech" },
+                { label: "HyperX", value: "hyperX" },
+              ]}
+            />
           </Col>
 
-          <Col className="colInput" span={8}>
-            <label htmlFor="category">Select Category</label> <br />
-            <select
-              className="gInput"
-              id="category"
-              defaultValue={product?.category}
-              {...register("category", { required: true })}
-            >
-              <option value="smartphones">Smartphones</option>
-              <option value="laptops">Laptops</option>
-              <option value="smartwatches">Smartwatches</option>
-              <option value="camera">Camera</option>
-              <option value="tablets">Tablets</option>
-            </select>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
+            <SelectInput
+              type="select"
+              name="category"
+              label="Select Category"
+              options={[
+                { label: "Smartphones", value: "smartphones" },
+                { label: "Laptops", value: "laptops" },
+                { label: "Smartwatches", value: "smartwatches" },
+                { label: "Tablets", value: "tablets" },
+                { label: "Smart TV", value: "smart tv" },
+              ]}
+            />
           </Col>
-          <Col className="colInput" span={8}>
-            <label htmlFor="operating_system">Operating System</label> <br />
-            <select
-              className="gInput"
-              id="operating_system"
-              defaultValue={product?.operating_system}
-              {...register("operating_system", { required: true })}
-            >
-              <option value="windows">Windows</option>
-              <option value="android">Android</option>
-              <option value="iOS">ios</option>
-            </select>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
+            <SelectInput
+              type="select"
+              name="operating_system"
+              label="Operating System"
+              options={[
+                { label: "IOS", value: "ios" },
+                { label: "Android", value: "android" },
+                { label: "Windows", value: "windows" },
+              ]}
+            />
           </Col>
-          <Col className="colInput" span={8}>
-            <label htmlFor="connectivity">Connectivity</label> <br />
-            <select
-              className="gInput"
-              id="connectivity"
-              defaultValue={product?.connectivity}
-              {...register("connectivity", { required: true })}
-            >
-              <option value="wi-fi">Wi-Fi</option>
-              <option value="bluetooth">Bluetooth</option>
-              <option value="usb">USB</option>
-            </select>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
+            <SelectInput
+              type="select"
+              name="connectivity"
+              label="Connectivity"
+              options={[
+                { label: "USB", value: "usb" },
+                { label: "Bluetooth", value: "bluetooth" },
+                { label: "Wi-Fi", value: "wi-fi" },
+              ]}
+            />
           </Col>
-          <Col className="colInput" span={8}>
-            <label htmlFor="power_source">Power Source</label> <br />
-            <select
-              className="gInput"
-              id="power_source"
-              defaultValue={product?.power_source}
-              {...register("power_source", { required: true })}
-            >
-              <option value="battery-powered">Battery-powered</option>
-              <option value="plug-in">Plug-in</option>
-            </select>
+          <Col
+            className="colInput"
+            span={24}
+            md={{ span: 12 }}
+            lg={{ span: 8 }}
+          >
+            <SelectInput
+              type="select"
+              name="power_source"
+              label="Power Source"
+              options={[
+                { label: "Plug-in", value: "plug-in" },
+                { label: "Battery-powered", value: "battery-powered" },
+              ]}
+            />
           </Col>
         </Row>
-        <Button htmlType="submit">Update</Button>
-      </form>
+        <Button htmlType="submit">Update Gadget</Button>
+      </CreateForm>
     </div>
   );
 };

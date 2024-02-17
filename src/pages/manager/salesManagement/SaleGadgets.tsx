@@ -105,9 +105,7 @@ const SaleGadgets = () => {
 
       render: (_: any, record: any) => (
         <div>
-          {/* {console.log(cart.map((item) => item._id === record._id))} */}
 
-          {/* {console.log(record)} */}
           <Button
             size="small"
             type="primary"
