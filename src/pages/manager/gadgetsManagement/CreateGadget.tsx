@@ -61,7 +61,7 @@ const CreateGadget = () => {
 
   return (
     <div
-      className="shadow rounded p-5 w-7xl"
+      className=" rounded p-1 w-7xl"
       style={{ border: "1px solid gray" }}
     >
       <h1 className="text-center">Create a New Electronics Gadget</h1>
@@ -238,7 +238,7 @@ const CreateGadget = () => {
             />
           </Col>
         </Row>
-        <Button htmlType="submit">Create</Button>
+        <Button className="ml-2 mb-2" htmlType="submit">Create</Button>
       </CreateForm>
     </div>
   );

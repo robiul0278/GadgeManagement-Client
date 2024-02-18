@@ -13,7 +13,7 @@ import { setCart } from '../features/product/productSlice';
 import { setmCart } from '../features/product/managerCartSlice';
   
   const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/api/v1',
+    baseUrl: 'https://gadget-management-server.vercel.app/api/v1',
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;
@@ -35,7 +35,7 @@ import { setmCart } from '../features/product/managerCartSlice';
     if (result?.error?.status === 401) {
       //* Send Refresh
   
-      const res = await fetch('http://localhost:5000/api/v1/auth/refresh-token', {
+      const res = await fetch('https://gadget-management-server.vercel.app/api/v1/auth/refresh-token', {
         method: 'POST',
         credentials: 'include',
       });

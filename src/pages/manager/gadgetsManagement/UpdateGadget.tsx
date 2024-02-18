@@ -89,7 +89,7 @@ const UpdateGadget = () => {
   };
   return (
     <div
-      className="shadow rounded p-5 w-7xl"
+      className=" rounded p-1 w-7xl"
       style={{ border: "1px solid gray" }}
     >
       <h1 className="text-center">Update Electronics Gadget</h1>

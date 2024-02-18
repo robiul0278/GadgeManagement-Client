@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Skeleton, Space, Table } from "antd";
+import { Button, Col, Row, Skeleton, Space, Table } from "antd";
 import {
   useAllGadgetQuery,
   useBulkDeleteMutation,
@@ -197,8 +197,8 @@ const AllGadgets = () => {
     <>
       <h1 className="text-center">All Electronics Gadgets</h1>
       <hr />
-      <div style={{ display: "flex" }}>
-        <div className="border rounded mt-2 mb-2" style={{ width: "300px" }}>
+      <Row >
+        <Col span={24} xl={{span: 5}} className="border rounded" style={{ width: "300px" }}>
           <h3 className="text-center">Filtered Your Data</h3>
           <hr />
           <form className="p-2" style={{ marginBottom: 10, marginTop: 10 }}>
@@ -290,22 +290,23 @@ const AllGadgets = () => {
               <option value="bluetooth">Bluetooth</option>
             </select>
           </form>
-        </div>
-        <div className="border rounded m-2">
-          <div className="m-5" style={{ marginBottom: 10, marginTop: 10, display: 'flex', justifyContent: 'space-between' }}>
+        </Col>
+        <Col span={24} xl={{span: 18}} className="border rounded mt-2">
+          <div className="ml-2" style={{ marginBottom: 10, marginTop: 10, display: 'flex', justifyContent: 'space-between' }}>
             <Button type="primary" onClick={handleBulkDelete}>
               Delete
             </Button>
 
           </div>
           <Table
-            className="m-5"
+            className="p-2"
             rowSelection={rowSelection}
             columns={columns}
             dataSource={allData}
+            scroll={{ x: 1500, y: 300 }}
           />
-        </div>
-      </div>
+        </Col>
+      </Row>
     </>
   );
 };

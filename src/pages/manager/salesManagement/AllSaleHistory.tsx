@@ -1,48 +1,58 @@
 import { useState } from "react";
-import { Skeleton, Table } from "antd";
+import { Col, Row, Skeleton, Table } from "antd";
 import { useAllSalesQuery } from "../../../redux/features/sales/salesApi";
 import { SerializedError } from "@reduxjs/toolkit";
 import type { TableColumnsType } from "antd";
 import { TSales } from "../../../types/types";
 
+
 const AllSalesHistory = () => {
   const { data: allHistory, isLoading, error } = useAllSalesQuery({});
-//   const User = useAppSelector(selectCurrentUser);
+  //   const User = useAppSelector(selectCurrentUser);
 
   const [filter, setFilter] = useState<string>("all-history");
 
-//   const userFilteredData = (allHistory?.data || []).filter((item: TSales | null) => {
-//     return item && item.userId === User!.userId;
-//   });
+  //   const userFilteredData = (allHistory?.data || []).filter((item: TSales | null) => {
+  //     return item && item.userId === User!.userId;
+  //   });
 
   const columns: TableColumnsType<TSales> = [
     {
       title: "Buyer Name",
       dataIndex: "name",
+      key: "name",
+      width: 150,
+      fixed: "left",
     },
     {
       title: "Contact Number",
       dataIndex: "contact_number",
+      key: "contact_number",
     },
     {
       title: "Email Address",
       dataIndex: "email",
+      key: "email",
     },
     {
       title: "Address",
       dataIndex: "address",
+      key: "address",
     },
     {
       title: "Postal Code",
       dataIndex: "postal_code",
+      key: "postal_code",
     },
     {
       title: "Products Quantity",
       dataIndex: "quantity",
+      key: "quantity",
     },
     {
       title: "Sales Date",
       dataIndex: "date",
+      key: "date",
     },
   ];
 
@@ -80,8 +90,7 @@ const AllSalesHistory = () => {
     }
   };
 
-//   const filteredData = filterData(userFilteredData, filter);
-
+  //   const filteredData = filterData(userFilteredData, filter);
 
   if (isLoading) {
     return <Skeleton active />;
@@ -97,12 +106,21 @@ const AllSalesHistory = () => {
 
   return (
     <>
-      <h1 className="text-center">Electronics Gadget Sales History</h1>
+      <div>
+        <Row >
+        <Col span={24}>
+          <h3 className="text-center">
+            Electronics Gadget Sales History
+          </h3>
+        </Col>
+        </Row>
+      </div>
       <hr />
-      <div style={{ marginBottom: 10, marginTop: 10, width: "200px" }}>
+      <div style={{ marginBottom: 10, marginTop: 10, width: 100 }}>
         <label htmlFor="select-history">Select History</label>
         <br />
         <select
+        
           className="gInput"
           id="select-history"
           value={filter}
@@ -115,7 +133,11 @@ const AllSalesHistory = () => {
           <option value="yearly">Yearly</option>
         </select>
       </div>
-      <Table columns={columns} dataSource={filteredData} />
+      <Table
+        columns={columns}
+        dataSource={filteredData}
+        scroll={{ x: 1500, y: 300 }}
+      />
     </>
   );
 };

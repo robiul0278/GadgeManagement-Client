@@ -87,11 +87,11 @@ const CreateVariant = () => {
   };
   return (
     <div
-      className="shadow rounded p-5 w-7xl"
+      className=" rounded w-7xl"
       style={{ border: "1px solid gray" }}
     >
       <h1 className="text-center">Create a New Variant Electronics Gadget</h1>
-      <hr />
+      <hr className="mb-4"/>
       <CreateForm onSubmit={onSubmit} defaultValues={defaultValues}>
         <Row>
           <Col

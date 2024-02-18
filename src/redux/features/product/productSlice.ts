@@ -1,17 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
+import { TGadget } from "../../../types/types";
 
 
-// const initialState = {
-//   cart: [],
-// };
 
 const productSlice = createSlice({
   name: "cart",
-  initialState: [],
+  initialState: []  as TGadget[],
   reducers: {
     setCart: (state, action) => {
       state.push(action.payload);
+    },
+    removeItemFromCart: (state, action) => {
+      const indexToRemove = state.findIndex(item => item._id === action.payload.id);
+      if (indexToRemove !== -1) {
+        state.splice(indexToRemove, 1);
+      }
     },
     clearCart: (state) => {
       state.splice(0, state.length);
@@ -19,7 +23,7 @@ const productSlice = createSlice({
   },
 });
 
-export const { setCart , clearCart } =
+export const { setCart , clearCart, removeItemFromCart } =
   productSlice.actions;
 
 export default productSlice.reducer;

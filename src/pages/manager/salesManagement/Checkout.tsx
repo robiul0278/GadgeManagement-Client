@@ -9,8 +9,9 @@ import CreateInput from "../../../components/createGadgetForm/CreateInput";
 import { useCreateSalesMutation } from "../../../redux/features/sales/salesApi";
 import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
 import { TGadget } from "../../../types/types";
-import { selectManagerCart } from "../../../redux/features/product/managerCartSlice";
-import { useAppSelector } from "../../../redux/hooks";
+import { removeFromCart, selectManagerCart } from "../../../redux/features/product/managerCartSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+
 
 const UserCheckOut = () => {
   const cart = useAppSelector(selectManagerCart);
@@ -23,7 +24,11 @@ const UserCheckOut = () => {
   const numbers = Object.values(quantities);
   const quantity = numbers.reduce((total, num) => total + num, 0);
 
-
+  const dispatch = useAppDispatch();
+  const handleRemoveItem = (productId: string) => {
+    // Dispatch the removeItemFromCart action when the button is clicked
+    dispatch(removeFromCart({ id: productId }));
+  };
 
   // Calculate initial total amount based on default quantities and item prices
   useEffect(() => {
@@ -78,9 +83,17 @@ const UserCheckOut = () => {
 
   return (
     <Row className="" style={{}}>
-      <Col span={16}>
+      <Col span={24} xl={{span: 16}}>
         <div className="rounded p-5" style={{}}>
-          <h1 className="text-center">Sale Electronics Gadget</h1>
+        <div>
+        <Row>
+        <Col span={24} >
+          <h3 className="text-center">
+            Checkout Electronics Gadgets
+          </h3>
+        </Col>
+        </Row>
+      </div>
           <hr />
           <CreateForm onSubmit={onSubmit}>
             <Row>
@@ -166,7 +179,7 @@ const UserCheckOut = () => {
       <Col
         className="shadow rounded p-5"
         style={{ border: "1px solid gray" }}
-        span={8}
+        span={24} xl={{span: 8}}
       >
         {cart?.map((item: TGadget) => (
           <div
@@ -209,6 +222,13 @@ const UserCheckOut = () => {
                 min={1}
               />
             </Col>
+            <Button
+              type="dashed"
+              shape="circle"
+              onClick={() => handleRemoveItem(item._id)}
+            >
+              x
+            </Button>
           </div>
         ))}
         <h3>Total Amount = {totalAmount} BDT</h3>

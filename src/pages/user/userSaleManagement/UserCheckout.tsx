@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Col, Row } from "antd";
-import { useAppSelector } from "../../../redux/hooks";
-import { selectCart } from "../../../redux/features/product/productSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { removeItemFromCart, selectCart } from "../../../redux/features/product/productSlice";
 import { TGadget } from "../../../types/types";
 import { toast } from "sonner";
 import { useCreateSalesMutation } from "../../../redux/features/sales/salesApi";
@@ -16,6 +16,7 @@ const UserCheckOut = () => {
   const cart = useAppSelector(selectCart);
   const User = useAppSelector(selectCurrentUser);
   const [CreateSales] = useCreateSalesMutation();
+
   // const [UpdateQuantity] = useUpdateGadgetMutation();
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
@@ -27,9 +28,15 @@ const UserCheckOut = () => {
     return item && item.userId === User!.userId;
   });
 
+  const dispatch = useAppDispatch();
+  const handleRemoveItem = (productId: string) => {
+    // Dispatch the removeItemFromCart action when the button is clicked
+    dispatch(removeItemFromCart({ id: productId }));
+  };
+
   // Calculate initial total amount based on default quantities and item prices
   useEffect(() => {
-    const initialTotalAmount = userFilteredData?.reduce((total, item: TGadget) => {
+    const initialTotalAmount = cart?.reduce((total, item: TGadget) => {
       const defaultQuantity = 1; // You can set the default quantity here
       setQuantities((prevQuantities) => ({
         ...prevQuantities,
@@ -38,7 +45,7 @@ const UserCheckOut = () => {
       return Math.floor(total + item.price * defaultQuantity);
     }, 0);
     setTotalAmount(initialTotalAmount);
-  }, [userFilteredData]);
+  }, [cart]);
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     // Update the quantities state
@@ -80,7 +87,7 @@ const UserCheckOut = () => {
 
   return (
     <Row className="" style={{}}>
-      <Col span={16}>
+      <Col span={24} xl={{span: 16}}>
         <div className="rounded p-5" style={{}}>
           <h1 className="text-center">Sale Electronics Gadget</h1>
           <hr />
@@ -168,9 +175,9 @@ const UserCheckOut = () => {
       <Col
         className="shadow rounded p-5"
         style={{ border: "1px solid gray" }}
-        span={8}
+        span={24} xl={{span: 8}}
       >
-        {cart?.map((item: TGadget) => (
+        {userFilteredData?.map((item: TGadget) => (
           <div
             key={item._id}
             className="p-3 mt-2"
@@ -211,6 +218,13 @@ const UserCheckOut = () => {
                 min={1}
               />
             </Col>
+            <Button
+              type="dashed"
+              shape="circle"
+              onClick={() => handleRemoveItem(item._id)}
+            >
+              x
+            </Button>
           </div>
         ))}
         <h3>Total Amount = {totalAmount} BDT</h3>

@@ -4,6 +4,8 @@ import {
   Table,
   Skeleton,
   Badge,
+  Row,
+  Col,
 } from "antd";
 import { useAllGadgetQuery } from "../../../redux/features/product/productApi";
 import { SerializedError } from "@reduxjs/toolkit";
@@ -11,7 +13,6 @@ import React, { useState } from "react";
 import type { TableColumnsType } from "antd";
 import { TGadget } from "../../../types/types";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-
 import {
   ShoppingCartOutlined,
 } from "@ant-design/icons";
@@ -60,42 +61,53 @@ const AllSaleMyGadgets = () => {
     {
       title: "Name",
       dataIndex: "name",
+      key: "name",
+      fixed: "left",
     },
     {
       title: "Price",
       dataIndex: "price",
+      key: "price",
     },
     {
       title: "Brand",
       dataIndex: "brand",
+      key: "brand",
     },
     {
       title: "Quantity",
       dataIndex: "quantity",
+      key: "quantity",
     },
     {
       title: "Model_Number",
       dataIndex: "model_number",
+      key: "model_number",
     },
     {
       title: "Category",
       dataIndex: "category",
+      key: "category",
     },
     {
       title: "Connectivity",
       dataIndex: "connectivity",
+      key: "connectivity",
     },
     {
       title: "Power_Source",
       dataIndex: "power_source",
+      key: "power_source",
     },
     {
       title: "Operating_System",
       dataIndex: "operating_system",
+      key: "operating_system",
     },
     {
       title: "Features",
       dataIndex: "features",
+      key: "features",
     },
 
     {
@@ -131,7 +143,15 @@ const AllSaleMyGadgets = () => {
 
   return (
     <>
-      <h1 className="text-center">Sales Electronics Gadget</h1>
+      <div>
+        <Row>
+        <Col span={24}>
+          <h3 className="text-center">
+          Sales Electronics Gadget
+          </h3>
+        </Col>
+        </Row>
+      </div>
       <hr />
       <div
         className=""
@@ -143,6 +163,7 @@ const AllSaleMyGadgets = () => {
         }}
       >
         <input
+        width={100}
           className="rounded"
           style={{ padding: "5px", width: "20%", border: "1px solid gray" }}
           type="search"
@@ -161,7 +182,7 @@ const AllSaleMyGadgets = () => {
           </Link>
         </div>
       </div>
-      <Table columns={columns} dataSource={filteredData} />
+      <Table columns={columns} dataSource={filteredData}  scroll={{ x: 1500, y: 300 }}/>
     </>
   );
 };
