@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Skeleton, Space, Table } from "antd";
+import { Button, Col, Row, Skeleton, Space, Table } from "antd";
 import {
   useAllGadgetQuery,
   useBulkDeleteMutation,
@@ -91,6 +91,7 @@ const MyAllGadgets = () => {
     {
       title: "Action",
       key: "action",
+      // fixed: "right",
 
       render: (_: any, record: any) => (
         <Space>
@@ -140,7 +141,6 @@ const MyAllGadgets = () => {
     );
   });
 
-
   const allData = filteredData?.reduce((acc: TGadget[], item: TGadget) => {
     if (!item.isDeleted && item.quantity > 0 && item.userId === User!.userId) {
       acc.push({
@@ -172,7 +172,6 @@ const MyAllGadgets = () => {
     return <p>Error fetching gadgets: {errorMessage}</p>;
   }
 
-
   const onSelectChange = (newSelectedRowKeys: any) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
@@ -184,17 +183,16 @@ const MyAllGadgets = () => {
   };
 
   const handleBulkDelete = async () => {
-    const res=  await BulkDelete({ ids: selectedRowKeys });
-    console.log(res)
-
+    const res = await BulkDelete({ ids: selectedRowKeys });
+    console.log(res);
   };
 
   return (
     <>
       <h1 className="text-center">All Electronics Gadgets</h1>
-      <hr />
-      <div style={{ display: "flex" }}>
-        <div className="shadow rounded mt-2 mb-2" style={{ width: "300px" }}>
+      <hr className="mb-3" />
+      <Row>
+        <Col span={24} xl={{ span: 5 }} className="rounded border">
           <h3 className="text-center">Filtered Your Data</h3>
           <hr />
           <form className="p-2" style={{ marginBottom: 10, marginTop: 10 }}>
@@ -286,22 +284,23 @@ const MyAllGadgets = () => {
               <option value="bluetooth">Bluetooth</option>
             </select>
           </form>
-        </div>
-        <div className="shadow rounded m-2">
-          <div className="m-5" style={{ marginBottom: 10, marginTop: 10 }}>
-            <Button type="primary" onClick={handleBulkDelete}>
+        </Col>
+        <Col span={24} xl={{ span: 19 }} className="rounded border p-1 mt-2">
+          <div style={{ marginBottom: 10, marginTop: 10 }}>
+            <Button className="ml-2" type="primary" onClick={handleBulkDelete}>
               Delete
             </Button>
             <span style={{ marginLeft: 8 }}></span>
           </div>
           <Table
-            className="m-5"
+            className=""
             rowSelection={rowSelection}
             columns={columns}
             dataSource={allData}
+            scroll={{ x: 1500, y: 300 }}
           />
-        </div>
-      </div>
+        </Col>
+      </Row>
     </>
   );
 };

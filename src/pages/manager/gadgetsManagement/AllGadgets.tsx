@@ -198,7 +198,7 @@ const AllGadgets = () => {
       <h1 className="text-center">All Electronics Gadgets</h1>
       <hr />
       <Row >
-        <Col span={24} xl={{span: 5}} className="border rounded" style={{ width: "300px" }}>
+        <Col span={24} xl={{span: 5}} className="border rounded">
           <h3 className="text-center">Filtered Your Data</h3>
           <hr />
           <form className="p-2" style={{ marginBottom: 10, marginTop: 10 }}>

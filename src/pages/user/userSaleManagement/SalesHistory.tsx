@@ -117,7 +117,7 @@ const SalesHistory = () => {
           <option value="yearly">Yearly</option>
         </select>
       </div>
-      <Table columns={columns} dataSource={filteredData} />
+      <Table columns={columns} dataSource={filteredData}  scroll={{ x: 1500, y: 300 }} />
     </>
   );
 };

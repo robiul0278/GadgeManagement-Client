@@ -170,7 +170,7 @@ import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
             </Link>
           </div>
         </div>
-        <Table columns={columns} dataSource={filteredData} />
+        <Table columns={columns} dataSource={filteredData}  scroll={{ x: 1500, y: 300 }} />
       </>
     );
   };
