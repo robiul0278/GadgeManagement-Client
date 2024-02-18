@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Badge, Button, Skeleton, Space, Table } from "antd";
+import { Button, Skeleton, Space, Table } from "antd";
 import {
   useAllGadgetQuery,
   useBulkDeleteMutation,
@@ -14,10 +14,7 @@ import {
   CopyOutlined,
   DeleteOutlined,
   EditOutlined,
-  ShoppingCartOutlined,
 } from "@ant-design/icons";
-import { useAppDispatch } from "../../../redux/hooks";
-import { setCart } from "../../../redux/features/product/productSlice";
 
 interface DataType {
   key: React.Key;
@@ -32,7 +29,8 @@ const AllGadgets = () => {
   const { data: allGadgets, isLoading, error } = useAllGadgetQuery({});
   const [BulkDelete] = useBulkDeleteMutation();
   const [DeleteProduct] = useDeleteMutation();
-  const dispatch = useAppDispatch();
+
+  console.log(allGadgets)
 
   const [filters, setFilters] = useState({
     priceMin: "",
@@ -97,41 +95,27 @@ const AllGadgets = () => {
       key: "action",
 
       render: (_: any, record: any) => (
-        <div style={{ justifyItems: "center" }}>
-          {/* <Space> */}
-          <Button size="small" type="link">
-            
-            <Link to={`/user/update-gadget/${record._id}`}>
+        <Space>
+          <Button size="small" type="dashed">
+            <Link to={`/manager/update-gadget/${record._id}`}>
               <EditOutlined />
             </Link>
           </Button>
-          <Button size="small" type="link">
-            <Link to={`/user/duplicate-gadget/${record._id}`}>
+          <Button size="small" type="dashed">
+            <Link to={`/manager/duplicate-gadget/${record._id}`}>
               <CopyOutlined />
             </Link>
           </Button>
           <Button
             size="small"
-            type="link"
+            type="dashed"
             onClick={() => {
               handleDelete(record._id);
             }}
           >
             <DeleteOutlined />
           </Button>
-          {/* </Space> */}
-          <Space className="pt-3">
-            <Button
-              size="small"
-              type="primary"
-              onClick={() => {
-                handleAddCart(record);
-              }}
-            >
-              Add to Cart
-            </Button>
-          </Space>
-        </div>
+        </Space>
       ),
     },
   ];
@@ -139,16 +123,6 @@ const AllGadgets = () => {
   const handleDelete = async (id: string) => {
     await DeleteProduct(id);
   };
-
-  const handleAddCart = async (record: any) => {
-    dispatch(setCart({cart: record}))
-  };
-
-
-
-
-
-
 
 
 
@@ -322,15 +296,7 @@ const AllGadgets = () => {
             <Button type="primary" onClick={handleBulkDelete}>
               Delete
             </Button>
-              <div className="p-2">
-                <a href="#">
-                  <Badge count={5}>
-                    <ShoppingCartOutlined
-                      style={{ fontSize: "26px", color: "#0063cc" }}
-                    />
-                  </Badge>
-                </a>
-              </div>
+
           </div>
           <Table
             className="m-5"

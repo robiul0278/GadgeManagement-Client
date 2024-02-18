@@ -11,6 +11,8 @@ import React, { useState } from "react";
 import type { TableColumnsType, TableProps } from "antd";
 import { Link } from "react-router-dom";
 import { CopyOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
 
 interface DataType {
   key: React.Key;
@@ -23,6 +25,8 @@ type TableRowSelection<T> = TableProps<T>["rowSelection"];
 
 const MyAllGadgets = () => {
   const { data: allGadgets, isLoading, error } = useAllGadgetQuery({});
+  const User = useAppSelector(selectCurrentUser);
+
   const [BulkDelete] = useBulkDeleteMutation();
   const [DeleteProduct] = useDeleteMutation();
 
@@ -74,10 +78,6 @@ const MyAllGadgets = () => {
     {
       title: "Connectivity",
       dataIndex: "connectivity",
-    },
-    {
-      title: "Power Source",
-      dataIndex: "power_source",
     },
     {
       title: "Operating System",
@@ -142,7 +142,7 @@ const MyAllGadgets = () => {
 
 
   const allData = filteredData?.reduce((acc: TGadget[], item: TGadget) => {
-    if (!item.isDeleted && item.quantity > 0) {
+    if (!item.isDeleted && item.quantity > 0 && item.userId === User!.userId) {
       acc.push({
         key: item._id,
         _id: item._id,
@@ -153,7 +153,6 @@ const MyAllGadgets = () => {
         model_number: item.model_number,
         category: item.category,
         connectivity: item.connectivity,
-        power_source: item.power_source,
         operating_system: item.operating_system,
         features: item.features,
         release_date: item.release_date,

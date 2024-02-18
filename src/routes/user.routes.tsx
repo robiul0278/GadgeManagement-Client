@@ -1,11 +1,11 @@
 import CreateGadget from "../pages/manager/gadgetsManagement/CreateGadget";
 import UpdateGadget from "../pages/manager/gadgetsManagement/UpdateGadget";
-import SaleGadgets from "../pages/manager/salesManagement/SaleGadgets";
-import SalesHistory from "../pages/manager/salesManagement/SalesHistory";
+import SalesHistory from "../pages/user/userSaleManagement/SalesHistory";
 import CreateVariant from "../pages/manager/gadgetsManagement/CreateVariant";
 import UserDashboard from "../pages/UserDashboard";
 import MyAllGadgets from "../pages/user/userGadgetManagement/MyAllGadgets";
-import CheckOut from "../pages/manager/salesManagement/Checkout";
+import SaleMyGadgets from "../pages/user/userSaleManagement/SaleMyGadgets";
+import UserCheckOut from "../pages/user/userSaleManagement/UserCheckout";
 
 export const userPaths = [
   {
@@ -23,7 +23,7 @@ export const userPaths = [
       },
       {
         name: "My All Gadgets",
-        path: "all-gadget",
+        path: "all-gadgets",
         element: <MyAllGadgets />,
       },
       {
@@ -46,7 +46,7 @@ export const userPaths = [
       {
         name: "Sale Gadgets",
         path: "sale-gadgets",
-        element: <SaleGadgets />,
+        element: <SaleMyGadgets />,
       },
       {
         name: "Sales History",
@@ -57,7 +57,7 @@ export const userPaths = [
         hidden: true,
         name: "Checkout gadget",
         path: "checkout",
-        element: <CheckOut />,
+        element: <UserCheckOut />,
       },
     ],
   },

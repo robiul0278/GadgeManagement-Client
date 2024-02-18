@@ -6,17 +6,21 @@ import {
   useSingleProductQuery,
   useUpdateGadgetMutation,
 } from "../../../redux/features/product/productApi";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CreateForm from "../../../components/createGadgetForm/CreateForm";
 import CreateInput from "../../../components/createGadgetForm/CreateInput";
 import SelectInput from "../../../components/createGadgetForm/SelectInput";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
 
 const UpdateGadget = () => {
 
   const { gadgetId } = useParams();
   const { data: { data: product } = {}, isLoading } =
     useSingleProductQuery(gadgetId);
+    const user = useAppSelector(selectCurrentUser);
   const [UpdateGadget] = useUpdateGadgetMutation();
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <Skeleton active />;
@@ -65,12 +69,15 @@ const UpdateGadget = () => {
         data: updateInfo,
         id: gadgetId,
       }).unwrap();
+
+      console.log(res.data)
       
       if (res.success) {
         toast.success("Gadget Update successful!", {
           id: toastId,
           duration: 2000,
         });
+        navigate(`/${user!.role}/all-gadgets`)
       }
     } catch (error: any) {
       

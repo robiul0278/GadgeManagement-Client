@@ -1,16 +1,17 @@
 import CreateGadget from "../pages/manager/gadgetsManagement/CreateGadget";
 import AllGadgets from "../pages/manager/gadgetsManagement/AllGadgets";
 import UpdateGadget from "../pages/manager/gadgetsManagement/UpdateGadget";
-import SaleGadgets from "../pages/manager/salesManagement/SaleGadgets";
-import SalesHistory from "../pages/manager/salesManagement/SalesHistory";
+import SaleGadgets from "../pages/manager/salesManagement/AllSaleGadgets";
 import CreateVariant from "../pages/manager/gadgetsManagement/CreateVariant";
 import ManagerDashboard from "../pages/ManagerDashboard";
+import AllSalesHistory from "../pages/manager/salesManagement/AllSaleHistory";
+import CheckOut from "../pages/manager/salesManagement/Checkout";
 
 export const managerPaths = [
   {
     name: "Manager Dashboard",
     path: "dashboard",
-    element: <ManagerDashboard/>,
+    element: <ManagerDashboard />,
   },
   {
     name: "Gadgets Management",
@@ -22,7 +23,7 @@ export const managerPaths = [
       },
       {
         name: "All Gadgets",
-        path: "all-gadget",
+        path: "all-gadgets",
         element: <AllGadgets />,
       },
       {
@@ -50,7 +51,13 @@ export const managerPaths = [
       {
         name: "Sales History",
         path: "sale-history",
-        element: <SalesHistory />,
+        element: <AllSalesHistory />,
+      },
+      {
+        hidden: true,
+        name: "Checkout gadget",
+        path: "checkout1",
+        element: <CheckOut />,
       },
     ],
   },

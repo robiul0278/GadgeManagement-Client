@@ -9,6 +9,8 @@ import {
   } from '@reduxjs/toolkit/query/react';
   import { RootState } from '../store';
   import { logout, setUser } from '../features/auth/authSlice';
+import { setCart } from '../features/product/productSlice';
+import { setmCart } from '../features/product/managerCartSlice';
   
   const baseQuery = fetchBaseQuery({
     baseUrl: 'http://localhost:5000/api/v1',
@@ -43,6 +45,7 @@ import {
       if (data?.data?.accessToken) {
         const user = (api.getState() as RootState).auth.user;
         const cart = (api.getState() as RootState).cart;
+        const mCart = (api.getState() as RootState).mCart;
   
         api.dispatch(
           setUser({
@@ -51,8 +54,13 @@ import {
           })
         );
         api.dispatch(
-          setUser({
+          setCart({
            cart,
+          })
+        );
+        api.dispatch(
+          setmCart({
+           mCart,
           })
         );
 

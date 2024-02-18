@@ -29,12 +29,13 @@ export type TGadget = {
     category: string,
     operating_system: string,
     connectivity: string,
-    power_source:string ,
+    power_source?:string ,
     features: string,
     isDeleted?: boolean,
     release_date: string,
     image?: string,
     itemQuantity?: number;
+    userId?: string;
 }
 
 
@@ -44,6 +45,7 @@ export type TSales = {
   name: string;
   quantity: number;
   date: string;
+  userId?: string;
 }
 
 

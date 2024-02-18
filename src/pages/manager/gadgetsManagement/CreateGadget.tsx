@@ -8,11 +8,12 @@ import SelectInput from "../../../components/createGadgetForm/SelectInput";
 import CreateForm from "../../../components/createGadgetForm/CreateForm";
 import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
 import { useAppSelector } from "../../../redux/hooks";
+import { useNavigate } from "react-router-dom";
 
 const CreateGadget = () => {
   const [CreateGadget] = useCreateGadgetMutation();
   const User = useAppSelector(selectCurrentUser);
-
+  const navigate = useNavigate();
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Creating Gadget!");
 
@@ -29,14 +30,17 @@ const CreateGadget = () => {
         power_source: data.power_source,
         features: data.features,
         release_date: new Date(),
-        image: data.image,
+        userId: User?.userId,
         user: User?.userId,
       };
+
+      console.log(createInfo)
 
       const formData = new FormData();
 
       formData.append("data", JSON.stringify(createInfo));
       formData.append("file", data.image);
+
 
       const res = await CreateGadget(formData).unwrap();
       if (res.success) {
@@ -44,7 +48,9 @@ const CreateGadget = () => {
           id: toastId,
           duration: 2000,
         });
+        navigate(`/${User!.role}/all-gadgets`)
       }
+
     } catch (error: any) {
       toast.error(`Something went wrong! ${error?.data?.message} !`, {
         id: toastId,
@@ -75,21 +81,21 @@ const CreateGadget = () => {
               placeholder="Product Name"
             />
           </Col>
-          <Col className="colFile" span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-            <Controller
-              name="image"
-              render={({ field: { onChange, value, ...field } }) => (
-                <Form.Item label="Picture">
-                  <Input
-                    type="file"
-                    value={value?.fileName}
-                    {...field}
-                    onChange={(e) => onChange(e.target.files?.[0])}
-                  />
-                </Form.Item>
-              )}
-            />
-          </Col>
+          <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <Controller
+                name="image"
+                render={({ field: { onChange, value, ...field } }) => (
+                  <Form.Item label="Picture">
+                    <Input
+                      type="file"
+                      value={value?.fileName}
+                      {...field}
+                      onChange={(e) => onChange(e.target.files?.[0])}
+                    />
+                  </Form.Item>
+                )}
+              />
+            </Col>
           <Col
             className="colInput"
             span={24}

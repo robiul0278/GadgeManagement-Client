@@ -13,13 +13,10 @@ import { TGadget } from "../../../types/types";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 import {
-  selectCart,
-  setCart,
-} from "../../../redux/features/product/productSlice";
-import {
   ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { selectManagerCart, setmCart } from "../../../redux/features/product/managerCartSlice";
 
 interface DataType {
   key: React.Key;
@@ -28,12 +25,14 @@ interface DataType {
   address: string;
 }
 
-const SaleGadgets = () => {
+const AllSaleMyGadgets = () => {
   const { data: allGadgets, isLoading, error } = useAllGadgetQuery({});
   const [searchQuery, setSearchQuery] = useState<string>("");
   const dispatch = useAppDispatch();
-  const cart = useAppSelector(selectCart);
+  const cart = useAppSelector(selectManagerCart);
 
+  // console.log(cart)
+  // console.log(allGadgets)
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -54,7 +53,7 @@ const SaleGadgets = () => {
   cart.map((item: any) => ids.push(item._id));
 
   const handleAddCart = async (record: any) => {
-    dispatch(setCart(record));
+    dispatch(setmCart(record));
   };
 
   const columns: TableColumnsType<DataType> = [
@@ -153,7 +152,7 @@ const SaleGadgets = () => {
           onChange={handleSearch}
         />
         <div className="p-2 mr-2">
-          <Link to="/user/checkout">
+          <Link to="/manager/checkout1">
             <Badge count={cart?.length}>
               <ShoppingCartOutlined
                 style={{ fontSize: "26px", color: "#0063cc" }}
@@ -167,4 +166,4 @@ const SaleGadgets = () => {
   );
 };
 
-export default SaleGadgets;
+export default AllSaleMyGadgets;

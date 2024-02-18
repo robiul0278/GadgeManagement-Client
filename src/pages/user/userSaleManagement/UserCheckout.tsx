@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Col, Row } from "antd";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectCart } from "../../../redux/features/product/productSlice";
+import { TGadget } from "../../../types/types";
 import { toast } from "sonner";
+import { useCreateSalesMutation } from "../../../redux/features/sales/salesApi";
 import { FieldValues } from "react-hook-form";
 // import { useUpdateGadgetMutation } from "../../../redux/features/product/productApi";
 import { useEffect, useState } from "react";
 import CreateForm from "../../../components/createGadgetForm/CreateForm";
 import CreateInput from "../../../components/createGadgetForm/CreateInput";
-import { useCreateSalesMutation } from "../../../redux/features/sales/salesApi";
 import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
-import { TGadget } from "../../../types/types";
-import { selectManagerCart } from "../../../redux/features/product/managerCartSlice";
-import { useAppSelector } from "../../../redux/hooks";
 
 const UserCheckOut = () => {
-  const cart = useAppSelector(selectManagerCart);
+  const cart = useAppSelector(selectCart);
   const User = useAppSelector(selectCurrentUser);
   const [CreateSales] = useCreateSalesMutation();
   // const [UpdateQuantity] = useUpdateGadgetMutation();
@@ -23,11 +23,13 @@ const UserCheckOut = () => {
   const numbers = Object.values(quantities);
   const quantity = numbers.reduce((total, num) => total + num, 0);
 
-
+  const userFilteredData = cart.filter((item: TGadget | null) => {
+    return item && item.userId === User!.userId;
+  });
 
   // Calculate initial total amount based on default quantities and item prices
   useEffect(() => {
-    const initialTotalAmount = cart?.reduce((total, item: TGadget) => {
+    const initialTotalAmount = userFilteredData?.reduce((total, item: TGadget) => {
       const defaultQuantity = 1; // You can set the default quantity here
       setQuantities((prevQuantities) => ({
         ...prevQuantities,
@@ -36,7 +38,7 @@ const UserCheckOut = () => {
       return Math.floor(total + item.price * defaultQuantity);
     }, 0);
     setTotalAmount(initialTotalAmount);
-  }, [cart]);
+  }, [userFilteredData]);
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     // Update the quantities state

@@ -6,7 +6,7 @@ import {
   useCreateGadgetMutation,
   useSingleProductQuery,
 } from "../../../redux/features/product/productApi";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CreateForm from "../../../components/createGadgetForm/CreateForm";
 import CreateInput from "../../../components/createGadgetForm/CreateInput";
 import SelectInput from "../../../components/createGadgetForm/SelectInput";
@@ -21,6 +21,7 @@ const CreateVariant = () => {
     useSingleProductQuery(gadgetId);
     const User = useAppSelector(selectCurrentUser);
   const [DuplicateVariant] = useCreateGadgetMutation();
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <Skeleton active />;
@@ -59,8 +60,10 @@ const CreateVariant = () => {
         release_date: new Date(),
         image: data.image,
         user: User?.userId,
+        userId: User?.userId,
       };
 
+      console.log(updateInfo)
       
       const formData = new FormData();
 
@@ -73,6 +76,7 @@ const CreateVariant = () => {
           id: toastId,
           duration: 2000,
         });
+        navigate(`/${User!.role}/all-gadgets`)
       }
     } catch (error: any) {
       toast.error(`Something went wrong! ${error?.data?.message} !`, {
@@ -110,8 +114,6 @@ const CreateVariant = () => {
               render={({ field: { onChange, value, ...field } }) => (
                 <Form.Item label="Picture">
                   <Input
-                  // required
-                  // defaultValue={value?.fileName.product?.image}
                     type="file"
                     value={value?.fileName}
                     {...field}

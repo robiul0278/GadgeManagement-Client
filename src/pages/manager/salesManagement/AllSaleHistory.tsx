@@ -5,9 +5,15 @@ import { SerializedError } from "@reduxjs/toolkit";
 import type { TableColumnsType } from "antd";
 import { TSales } from "../../../types/types";
 
-const SalesHistory = () => {
+const AllSalesHistory = () => {
   const { data: allHistory, isLoading, error } = useAllSalesQuery({});
+//   const User = useAppSelector(selectCurrentUser);
+
   const [filter, setFilter] = useState<string>("all-history");
+
+//   const userFilteredData = (allHistory?.data || []).filter((item: TSales | null) => {
+//     return item && item.userId === User!.userId;
+//   });
 
   const columns: TableColumnsType<TSales> = [
     {
@@ -74,6 +80,9 @@ const SalesHistory = () => {
     }
   };
 
+//   const filteredData = filterData(userFilteredData, filter);
+
+
   if (isLoading) {
     return <Skeleton active />;
   }
@@ -111,4 +120,4 @@ const SalesHistory = () => {
   );
 };
 
-export default SalesHistory;
+export default AllSalesHistory;

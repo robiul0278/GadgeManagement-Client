@@ -6,11 +6,11 @@ import { RootState } from "../../store";
 //   cart: [],
 // };
 
-const productSlice = createSlice({
-  name: "cart",
+const mCartSlice = createSlice({
+  name: "mCart",
   initialState: [],
   reducers: {
-    setCart: (state, action) => {
+    setmCart: (state, action) => {
       state.push(action.payload);
     },
     clearCart: (state) => {
@@ -19,9 +19,9 @@ const productSlice = createSlice({
   },
 });
 
-export const { setCart , clearCart } =
-  productSlice.actions;
+export const { setmCart , clearCart } =
+  mCartSlice.actions;
 
-export default productSlice.reducer;
+export default mCartSlice.reducer;
 
-export const selectCart = (state: RootState) => state.cart;
+export const selectManagerCart = (state: RootState) => state.mCart;
