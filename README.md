@@ -17,13 +17,14 @@ npm run dev
 Now your application is ready to run.
 
 **Authentication:**
- - Users must register and log in to access the dashboard ,
+- Users must register and log in to access the dashboard ,
 - Manager create default in backend server .
+
 ** Manager Login Credential **
 ```
 email: manager@gmail.com
 password: manager12345
-
+```
 **How to use this application**
 **Authentication:**
 
