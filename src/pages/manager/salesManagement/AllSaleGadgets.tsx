@@ -44,7 +44,7 @@ const AllSaleMyGadgets = () => {
       .filter((value) => typeof value === "string")
       .join(" ")
       .toLowerCase();
-    return searchString.includes(searchQuery.toLowerCase()) && !item.isDeleted;
+    return searchString.includes(searchQuery.toLowerCase()) && !item.isDeleted && item.quantity > 0;
   });
 
 
@@ -142,8 +142,8 @@ const AllSaleMyGadgets = () => {
 
 
   return (
-    <>
-      <div>
+    <section   style={{ border: "1px solid gray", background: '#f0f0f0' }}>
+      <div   style={{ border: "1px solid gray", background: "lightgray" }}>
         <Row>
         <Col span={24}>
           <h3 className="text-center">
@@ -158,6 +158,7 @@ const AllSaleMyGadgets = () => {
         style={{
           marginBottom: 10,
           marginTop: 10,
+          marginLeft: 10,
           display: "flex",
           justifyContent: "space-between",
         }}
@@ -165,7 +166,7 @@ const AllSaleMyGadgets = () => {
         <input
         width={100}
           className="rounded"
-          style={{ padding: "5px", width: "20%", border: "1px solid gray" }}
+          style={{ paddingLeft: "5px", width: "20%", border: "1px solid gray" }}
           type="search"
           id="name"
           placeholder="Search gadgets"
@@ -183,7 +184,7 @@ const AllSaleMyGadgets = () => {
         </div>
       </div>
       <Table columns={columns} dataSource={filteredData}  scroll={{ x: 1500, y: 300 }}/>
-    </>
+    </section>
   );
 };
 

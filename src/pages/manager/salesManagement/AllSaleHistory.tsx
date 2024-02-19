@@ -50,6 +50,11 @@ const AllSalesHistory = () => {
       key: "quantity",
     },
     {
+      title: "Total Amounts",
+      dataIndex: "total_amounts",
+      key: "total_amounts"
+    },
+    {
       title: "Sales Date",
       dataIndex: "date",
       key: "date",
@@ -105,8 +110,8 @@ const AllSalesHistory = () => {
   const filteredData = filterData(allHistory?.data || [], filter);
 
   return (
-    <>
-      <div>
+    <section style={{ border: "1px solid gray", background: '#f0f0f0' }}>
+      <div style={{ border: "1px solid gray", background: "lightgray" }}>
         <Row >
         <Col span={24}>
           <h3 className="text-center">
@@ -116,7 +121,7 @@ const AllSalesHistory = () => {
         </Row>
       </div>
       <hr />
-      <div style={{ marginBottom: 10, marginTop: 10, width: 100 }}>
+      <div style={{ marginBottom: 10, marginTop: 10, marginLeft: 12, width: 100 }}>
         <label htmlFor="select-history">Select History</label>
         <br />
         <select
@@ -138,7 +143,7 @@ const AllSalesHistory = () => {
         dataSource={filteredData}
         scroll={{ x: 1500, y: 300 }}
       />
-    </>
+    </section>
   );
 };
 

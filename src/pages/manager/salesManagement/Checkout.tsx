@@ -44,11 +44,20 @@ const UserCheckOut = () => {
   }, [cart]);
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
+    const cartItem = cart.find((item) => item?._id === productId);
+    if (!cartItem) return; // Item not found in cart
+
     // Update the quantities state
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
       [productId]: newQuantity,
     }));
+
+    // Update the total amount here, and set it in state
+    const updatedTotalAmount =
+      totalAmount +
+      cartItem.price * (newQuantity - (quantities[productId] || 0));
+    setTotalAmount(updatedTotalAmount);
   };
 
   // React hook form
@@ -82,7 +91,7 @@ const UserCheckOut = () => {
   };
 
   return (
-    <Row className="" style={{}}>
+    <Row className=""  style={{ background: '#f0f0f0' }}>
       <Col span={24} xl={{span: 16}}>
         <div className="rounded p-5" style={{}}>
         <div>
@@ -204,11 +213,24 @@ const UserCheckOut = () => {
             <Col span={10}>
               <h4>Name: {item?.name}</h4>
               <p>Model: {item?.model_number}</p>
+              <p>Quantity: {item?.quantity}</p>
               <p>Price: {item?.price} BDT</p>
 
-              <input
-                style={{ width: "40px" }}
-                type="number"
+              <div className="mt-3">
+            <Button
+                onClick={() => {
+                  const newQuantity = Math.max(1, quantities[item?._id] - 1);
+                  handleQuantityChange(item?._id, newQuantity);
+                }}
+                disabled={quantities[item?._id] <= 1}
+              >
+                -
+              </Button>
+                <Button>
+                <input
+              readOnly
+                style={{ width: "40px", textAlign:"center", border: "none" }}
+                type="text"
                 value={quantities[item?._id]}
                 onChange={(e) => {
                   const newQuantity = +e.target.value;
@@ -220,7 +242,21 @@ const UserCheckOut = () => {
                   setTotalAmount(updatedTotalAmount);
                 }}
                 min={1}
+                // Disable the input if new quantity exceeds available stock
+                disabled={quantities[item?._id] > item.quantity}
               />
+                </Button>
+
+              <Button
+                onClick={() => {
+                  const newQuantity = quantities[item?._id] + 1;
+                  handleQuantityChange(item?._id, newQuantity);
+                }}
+                disabled={quantities[item?._id] >= item.quantity}
+              >
+                +
+              </Button>
+            </div>
             </Col>
             <Button
               type="dashed"

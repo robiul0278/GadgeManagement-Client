@@ -21,7 +21,7 @@ const MainLayout = () => {
     <Layout style={{height: "100vh"}}>
       <Sidebar/>
       <Layout>
-        <Header  style={{ padding: 0, background: colorBgContainer, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+        <Header  style={{ padding: 0, background: "#001529", display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <div>
           </div>
           <Button className='mr-5' onClick={handleLogout}>Logout</Button>

@@ -198,7 +198,7 @@ const AllGadgets = () => {
       <h1 className="text-center">All Electronics Gadgets</h1>
       <hr />
       <Row >
-        <Col span={24} xl={{span: 5}} className="border rounded">
+        <Col span={24} xl={{span: 5}} className="border rounded mt-2 mr-2"  style={{ background: '#f0f0f0' }}>
           <h3 className="text-center">Filtered Your Data</h3>
           <hr />
           <form className="p-2" style={{ marginBottom: 10, marginTop: 10 }}>
@@ -291,7 +291,7 @@ const AllGadgets = () => {
             </select>
           </form>
         </Col>
-        <Col span={24} xl={{span: 18}} className="border rounded mt-2">
+        <Col span={24} xl={{span: 18}} className="border rounded mt-2" style={{ background: '#f0f0f0' }}>
           <div className="ml-2" style={{ marginBottom: 10, marginTop: 10, display: 'flex', justifyContent: 'space-between' }}>
             <Button type="primary" onClick={handleBulkDelete}>
               Delete

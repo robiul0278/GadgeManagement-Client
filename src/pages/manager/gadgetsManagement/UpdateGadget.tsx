@@ -90,7 +90,7 @@ const UpdateGadget = () => {
   return (
     <div
       className=" rounded p-1 w-7xl"
-      style={{ border: "1px solid gray" }}
+      style={{ border: "1px solid gray", background: '#f0f0f0' }}
     >
       <h1 className="text-center">Update Electronics Gadget</h1>
       <hr />

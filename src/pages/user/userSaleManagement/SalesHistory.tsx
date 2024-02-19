@@ -43,6 +43,10 @@ const SalesHistory = () => {
       dataIndex: "quantity",
     },
     {
+      title: "Total Amounts",
+      dataIndex: "total_amounts",
+    },
+    {
       title: "Sales Date",
       dataIndex: "date",
     },
@@ -98,10 +102,10 @@ const SalesHistory = () => {
 //   const filteredData = filterData(allHistory?.data || [], filter);
 
   return (
-    <>
+    <section style={{ border: "1px solid gray", background: '#f0f0f0' }}>
       <h1 className="text-center">Electronics Gadget Sales History</h1>
       <hr />
-      <div style={{ marginBottom: 10, marginTop: 10, width: "200px" }}>
+      <div style={{ marginBottom: 10, marginTop: 10,marginLeft: 12, width: 100 }}>
         <label htmlFor="select-history">Select History</label>
         <br />
         <select
@@ -118,7 +122,7 @@ const SalesHistory = () => {
         </select>
       </div>
       <Table columns={columns} dataSource={filteredData}  scroll={{ x: 1500, y: 300 }} />
-    </>
+    </section>
   );
 };
 

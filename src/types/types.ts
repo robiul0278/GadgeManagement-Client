@@ -46,6 +46,8 @@ export type TSales = {
   quantity: number;
   date: string;
   userId?: string;
+  
+total_amounts?: number | undefined;
 }
 
 

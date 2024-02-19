@@ -88,7 +88,7 @@ const CreateVariant = () => {
   return (
     <div
       className=" rounded w-7xl"
-      style={{ border: "1px solid gray" }}
+      style={{ border: "1px solid gray", background: '#f0f0f0' }}
     >
       <h1 className="text-center">Create a New Variant Electronics Gadget</h1>
       <hr className="mb-4"/>
@@ -265,7 +265,7 @@ const CreateVariant = () => {
             />
           </Col>
         </Row>
-        <Button htmlType="submit">Create Variant</Button>
+        <Button className="ml-2 mb-2" htmlType="submit">Create Variant</Button>
       </CreateForm>
     </div>
   );

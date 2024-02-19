@@ -52,7 +52,7 @@ import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
         .filter((value) => typeof value === "string")
         .join(" ")
         .toLowerCase();
-      return searchString.includes(searchQuery.toLowerCase()) && !item.isDeleted && item.userId === User?.userId;
+      return searchString.includes(searchQuery.toLowerCase()) && !item.isDeleted && item.userId === User?.userId && item.quantity > 0;
     });
   
 
@@ -139,7 +139,7 @@ import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
   
   
     return (
-      <>
+      <section style={{ border: "1px solid gray", background: '#f0f0f0' }}>
         <h1 className="text-center">Sales Electronics Gadget</h1>
         <hr />
         <div
@@ -147,13 +147,14 @@ import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
           style={{
             marginBottom: 10,
             marginTop: 10,
+            marginLeft: 10,
             display: "flex",
             justifyContent: "space-between",
           }}
         >
           <input
             className="rounded"
-            style={{ padding: "5px", width: "20%", border: "1px solid gray" }}
+            style={{ paddingLeft: "5px", width: "20%", border: "1px solid gray" }}
             type="search"
             id="name"
             placeholder="Search gadgets"
@@ -171,7 +172,7 @@ import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
           </div>
         </div>
         <Table columns={columns} dataSource={filteredData}  scroll={{ x: 1500, y: 300 }} />
-      </>
+      </section>
     );
   };
   

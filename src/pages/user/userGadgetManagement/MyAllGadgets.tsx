@@ -48,12 +48,10 @@ const MyAllGadgets = () => {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "Image",
-      dataIndex: "image",
-    },
-    {
       title: "Name",
       dataIndex: "name",
+      key: "name",
+      fixed: "left"
     },
     {
       title: "Price",
@@ -192,7 +190,7 @@ const MyAllGadgets = () => {
       <h1 className="text-center">All Electronics Gadgets</h1>
       <hr className="mb-3" />
       <Row>
-        <Col span={24} xl={{ span: 5 }} className="rounded border">
+        <Col span={24} xl={{ span: 5 }} className="rounded border mt-2 mr-2" style={{ background: '#f0f0f0' }}>
           <h3 className="text-center">Filtered Your Data</h3>
           <hr />
           <form className="p-2" style={{ marginBottom: 10, marginTop: 10 }}>
@@ -285,7 +283,7 @@ const MyAllGadgets = () => {
             </select>
           </form>
         </Col>
-        <Col span={24} xl={{ span: 19 }} className="rounded border p-1 mt-2">
+        <Col span={24} xl={{ span: 18 }} className="rounded border p-1 mt-2" style={{ background: '#f0f0f0' }}>
           <div style={{ marginBottom: 10, marginTop: 10 }}>
             <Button className="ml-2" type="primary" onClick={handleBulkDelete}>
               Delete
@@ -293,6 +291,7 @@ const MyAllGadgets = () => {
             <span style={{ marginLeft: 8 }}></span>
           </div>
           <Table
+          style={{ background: '#f0f0f0' }}
             className=""
             rowSelection={rowSelection}
             columns={columns}
