@@ -33,9 +33,9 @@ const Register = () => {
       <h1 className="pb-5">Please Register !</h1>
 
         <RegisterForm onSubmit={onSubmit}>
-          <RegisterInput type="text" name="username" label="Username:" />
-          <RegisterInput type="text" name="email" label="Email:" />
-          <RegisterInput type="text" name="password" label="Password" />
+          <RegisterInput type="text" name="username" label="Username:"  placeholder="username"/>
+          <RegisterInput type="text" name="email" label="Email:" placeholder="email"/>
+          <RegisterInput type="text" name="password" label="Password" placeholder="password"/>
           <Button htmlType="submit">Register</Button>
           
         </RegisterForm>

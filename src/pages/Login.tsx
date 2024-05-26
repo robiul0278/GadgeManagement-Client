@@ -16,10 +16,10 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const defaultValues = {
-    email: "robiul0278@gmail.com",
-    password: "robiul0278",
-  };
+  // const defaultValues = {
+  //   email: "robiul0278@gmail.com",
+  //   password: "robiul0278",
+  // };
 
   const [Login] = useLoginMutation();
 
@@ -52,9 +52,9 @@ const Login = () => {
     <Row justify="center" align="middle" style={{ height: "100vh" }}>
       <div className=" rounded p-5" style={{ border: "1px solid gray" }}>
       <h1 className="pb-5">Please Login !</h1>
-        <LoginForm onSubmit={onSubmit} defaultValues={defaultValues}>
-          <LoginInput type="text" name="email" label="Email:" />
-          <LoginInput type="text" name="password" label="Password" />
+        <LoginForm onSubmit={onSubmit}>
+          <LoginInput type="text" name="email" label="Email:" placeholder="email"/>
+          <LoginInput type="text" name="password" label="Password" placeholder="password"/>
           <Button htmlType="submit">Login</Button>
         </LoginForm>
         <div className="authNavigate">
